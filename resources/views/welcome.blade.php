@@ -9,7 +9,7 @@
             </h1>
         </div>
         <div class="col-md-6" style="border-left: 1px solid #777777;">
-            {!! Form::open(['class' => 'form-signin']) !!}
+            {!! Form::open(['url' => '/auth/login', 'class' => 'form-signin']) !!}
 
             <h2 class="form-signin-heading">Please sign in</h2>
 

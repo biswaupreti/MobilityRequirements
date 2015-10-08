@@ -7,6 +7,7 @@ use App\Projects;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ProjectsController
@@ -20,9 +21,13 @@ class ProjectsController extends Controller
      */
     public function index()
     {
+        if(Auth::user()){
+            $user = Auth::user()->name;
+        }
+
         $projects = Projects::latest()->get();
         
-        return view('projects.index', compact('projects'));
+        return view('projects.index', compact('projects', 'user'));
     }
 
 

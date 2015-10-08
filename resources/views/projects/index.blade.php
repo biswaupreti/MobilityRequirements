@@ -2,6 +2,8 @@
 
 @section('content')
 
+    <div class="info">Welcome {{ $user }}, <a href="{{ url('/auth/logout') }}">Logout</a></div>
+
     <div class="row">
         <div class="col-md-10">
             <h3>All Projects</h3>
