@@ -11,7 +11,7 @@ class WelcomeController extends Controller
 
     public function __construct()
     {
-        return true;
+        $this->middleware('auth');
     }
 
     public function index()
