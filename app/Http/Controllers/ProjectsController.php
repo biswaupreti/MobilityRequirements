@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
  * Class ProjectsController
  * @package App\Http\Controllers
  */
-class ProjectsController extends Controller
+class ProjectsController extends BaseController
 {
 
     /**
@@ -21,9 +21,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        if(Auth::user()){
-            $user = Auth::user()->name;
-        }
+        $user = $this->user;
 
         $projects = Projects::latest()->get();
         
@@ -71,6 +69,8 @@ class ProjectsController extends Controller
 
         return view('projects.edit', compact('project'));
     }
+
+
 
     public function update($id, Request $request)
     {

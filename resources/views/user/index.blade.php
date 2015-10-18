@@ -1,0 +1,67 @@
+@extends('layout')
+
+@section('content')
+
+    <div class="row">
+        <div class="col-md-10">
+            <h3>All Users</h3>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary"  style="margin-top: 20px;">
+                <a href="{{ url('users/create') }}"  style="color: #ffffff;">Create New</a>
+            </button>
+        </div>
+    </div>
+
+    <hr/>
+
+    @if(Session::has('flash_message'))
+        <div class="alert alert-success">
+            {{ Session::get('flash_message') }}
+        </div>
+    @endif
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Created On</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $i = 1; ?>
+        @foreach($users as $user)
+            <tr>
+                <th scope="row">{{ $i }}</th>
+                <td><a href="{{ url('/users', [$user->id, 'edit']) }}">{{ $user->name }}</a></td>
+                <td>{{ $user->email }}</td>
+                <td>
+                    @if($user->role == '2')
+                        Project Manager
+                    @elseif($user->role == '3')
+                        Developer / Designer
+                    @else
+                        Administrator
+                    @endif
+                </td>
+                <td>{{ $user->created_at }}</td>
+                <td>
+                    <a href="{{ url('/users', [$user->id, 'edit']) }}" title="Edit User Information!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+                    </a>
+                    {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id], 'onsubmit' => 'return confirm("Are you sure you want to delete?")']) !!}
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
+                        </button>
+                    {!! Form::close() !!}
+                </td>
+            </tr>
+            <?php $i++; ?>
+        @endforeach
+        </tbody>
+    </table>
+@stop
