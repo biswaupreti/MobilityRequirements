@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends BaseController
@@ -20,6 +21,10 @@ class UserController extends BaseController
 
     public function index()
     {
+        if($this->checkRestriction()){
+            return Redirect::to('/');
+        }
+
         $users = User::latest()->get();
 
         return view('user.index', compact('users'));
@@ -38,6 +43,10 @@ class UserController extends BaseController
      */
     public function create()
     {
+        if($this->checkRestriction()){
+            return Redirect::to('/');
+        }
+
         return view('user.create');
     }
 
@@ -48,6 +57,10 @@ class UserController extends BaseController
      */
     public function store(Request $request)
     {
+        if($this->checkRestriction()){
+            return Redirect::to('/');
+        }
+
         $this->validate($request, $this->rules);
 
         $data = $request->all();
@@ -80,6 +93,10 @@ class UserController extends BaseController
             $this->rules['password_confirmation'] = '';
         endif;
 
+        if($this->user->role != '1'){
+            $this->rules['role'] = '';
+        }
+
         $this->rules['email'] = 'required|email';
         $this->validate($request, $this->rules);
 
@@ -88,18 +105,36 @@ class UserController extends BaseController
 
         Session::flash('flash_message', 'User successfully updated!');
 
+        if($this->user->role != '1'){
+            return redirect('/');
+        }
+
         return redirect('users');
     }
 
 
     public function destroy($id)
     {
+        if($this->checkRestriction()){
+            return Redirect::to('/');
+        }
+
         $user = User::findOrFail($id);
         $user->delete();
 
         Session::flash('flash_message', 'User successfully deleted!');
 
         return redirect('users');
+    }
+
+
+    public function checkRestriction()
+    {
+        if($this->user->role != '1'){
+            Session::flash('flash_message_warning', 'Sorry, you are not authorized to access this page!');
+            return true;
+        }
+        return false;
     }
 
 }

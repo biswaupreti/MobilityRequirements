@@ -3,7 +3,7 @@
     if($mode == 'edit'){
         $password_attrib = array('class' => 'form-control', 'required' => 'required', 'disabled' => 'disabled');
         if($authUser->role != '1'){
-            $role_attrib = ['class' => 'form-control', 'readonly' => 'readonly'];
+            $role_attrib = ['class' => 'form-control', 'disabled' => 'disabled'];
         }
     } else{
         $password_attrib = array('class' => 'form-control', 'required' => 'required');

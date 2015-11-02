@@ -8,6 +8,7 @@ Route::get('contact', 'PagesController@contact');
 
 Route::resource('users', 'UserController');
 Route::resource('projects', 'ProjectsController');
+Route::resource('requirements', 'RequirementsController');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

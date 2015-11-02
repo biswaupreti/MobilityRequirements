@@ -11,10 +11,27 @@
             <div class="content">
 
                 @if(isset($authUser) && !empty($authUser->name))
-                    <div class="user-info">Welcome {{ $authUser->name }}, <a href="{{ url('/auth/logout') }}">Logout</a></div>
+                    <div class="user-info">
+                        <a href="{{ url('/') }}">Dashboard </a>
+                        | Welcome {{ $authUser->name }},
+                        <a href="{{ url('/auth/logout') }}">Logout</a>
+                    </div>
+                @endif
+
+                @if(Session::has('flash_message'))
+                    <div class="alert alert-success">
+                        {{ Session::get('flash_message') }}
+                    </div>
+                @endif
+
+                @if(Session::has('flash_message_warning'))
+                    <div class="alert alert-warning">
+                        {{ Session::get('flash_message_warning') }}
+                    </div>
                 @endif
 
                 @yield('content')
+
             </div>
         </div>
         @yield('footer')

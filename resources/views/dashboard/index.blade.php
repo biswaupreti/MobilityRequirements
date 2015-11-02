@@ -12,10 +12,10 @@
             @if($authUser->role == '1')
             <div class="col-md-3 dashboard-menu">
                 <ul>
-                    <li><a href="javascript:;" class="btn btn-primary">Project Management</a> </li>
-                    <li><a href="javascript:;" class="btn btn-primary">Requirement Management</a> </li>
-                    <li><a href="javascript:;" class="btn btn-primary">Context Management</a> </li>
-                    <li><a href="javascript:;" class="btn btn-primary">Scenario Management</a> </li>
+                    <li><a href="{{ url('/projects') }}" class="btn btn-primary">Project Management</a> </li>
+                    {{--<li><a href="javascript:;" class="btn btn-primary">Requirement Management</a> </li>--}}
+                    {{--<li><a href="javascript:;" class="btn btn-primary">Context Management</a> </li>--}}
+                    {{--<li><a href="javascript:;" class="btn btn-primary">Scenario Management</a> </li>--}}
                     <li><a href="{{ url('/users') }}" class="btn btn-primary">User Management</a> </li>
                 </ul>
             </div>
@@ -30,7 +30,15 @@
                         <dt>Email: </dt>
                         <dd>{{ $authUser->email }}</dd>
                         <dt>User Role: </dt>
-                        <dd>{{ $authUser->role }}</dd>
+                        <dd>
+                            @if($authUser->role == '1')
+                                Administrator
+                            @elseif($authUser->role == '2')
+                                Project Manager
+                            @else
+                                Developer / Designer
+                            @endif
+                        </dd>
                         <dt>Created On</dt>
                         <dd>{{ $authUser->created_at }}</dd>
                     </dl>
