@@ -10,7 +10,13 @@
 
 <div class="form-group">
     {!! Form::label('project_owner', 'Project Owner:') !!}
-    {!! Form::text('project_owner', null, ['class' => 'form-control']) !!}
+    {!! Form::select('project_owner', $owners, null, ['class' => 'form-control', 'required' => 'required']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('project_members', 'Project Members:') !!}
+    {!! Form::select('project_members[]', $members, isset($selected_members) ? $selected_members : null,
+    ['class' => 'form-control', 'required' => 'required', 'multiple' => 'multiple']) !!}
 </div>
 
 <div class="form-group">

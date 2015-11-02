@@ -10,7 +10,7 @@
 
     {!! Form::open(['url' => 'projects']) !!}
 
-        @include('projects._form', ['submitButtonText' => 'Add Project'])
+        @include('projects._form', ['submitButtonText' => 'Add Project', 'owners' => $owners, 'members' => $members])
 
     {!! Form::close() !!}
 

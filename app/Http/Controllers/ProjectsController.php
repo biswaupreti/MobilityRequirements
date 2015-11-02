@@ -7,6 +7,7 @@ use App\Projects;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Requirements;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Session;
 class ProjectsController extends BaseController
 {
 
+    private $rules = ['title' => 'required|min:5', 'project_owner' => 'required', 'project_members' => 'required'];
+
     /**
      * @return \Illuminate\View\View
      */
@@ -26,7 +29,7 @@ class ProjectsController extends BaseController
         $user = $this->user;
 
         $projects = Projects::latest()->get();
-        
+
         return view('projects.index', compact('projects', 'user'));
     }
 
@@ -48,7 +51,30 @@ class ProjectsController extends BaseController
      */
     public function create()
     {
-        return view('projects.create');
+        /**
+         * @todo Refactor this section to follow DRY concept
+         */
+        $data_owners = User::select('id', 'name')->whereIn('role', [1, 2])->orderBy('name', 'asc')->get()->toArray();
+        $data_members = User::select('id', 'name')->whereIn('role', [2, 3])->orderBy('name', 'asc')->get()->toArray();
+
+        $owners = array();
+        if($data_owners){
+            foreach($data_owners as $owner){
+                $owners[$owner['id']] = $owner['name'];
+            }
+        }
+
+        $members = array();
+        if($data_members){
+            foreach($data_members as $member){
+                $members[$member['id']] = $member['name'];
+            }
+        }
+        /**
+         * @endTodo
+         */
+
+        return view('projects.create', compact('owners', 'members'));
     }
 
 
@@ -58,9 +84,12 @@ class ProjectsController extends BaseController
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['title' => 'required|min:5', 'project_owner' => 'required']);
+        $this->validate($request, $this->rules);
 
-        Projects::create($request->all());
+        $data = $request->all();
+        $data['project_members'] = implode(',', $data['project_members']);
+
+        Projects::create($data);
 
         Session::flash('flash_message', 'Congratulations, New project added successfully!');
 
@@ -71,19 +100,46 @@ class ProjectsController extends BaseController
     public function edit($id)
     {
         $project = Projects::find($id);
+        $selected_members = explode(',', $project->project_members);
 
-        return view('projects.edit', compact('project'));
+        /**
+         * @todo Refactor this section to follow DRY concept
+         */
+        $data_owners = User::select('id', 'name')->whereIn('role', [1, 2])->orderBy('name', 'asc')->get()->toArray();
+        $data_members = User::select('id', 'name')->whereIn('role', [2, 3])->orderBy('name', 'asc')->get()->toArray();
+
+        $owners = array();
+        if($data_owners){
+            foreach($data_owners as $owner){
+                $owners[$owner['id']] = $owner['name'];
+            }
+        }
+
+        $members = array();
+        if($data_members){
+            foreach($data_members as $member){
+                $members[$member['id']] = $member['name'];
+            }
+        }
+        /**
+         * @endTodo
+         */
+
+        return view('projects.edit', compact('project', 'owners', 'members', 'selected_members'));
     }
 
 
 
     public function update($id, Request $request)
     {
-        $this->validate($request, ['title' => 'required|min:5', 'project_owner' => 'required']);
+        $this->validate($request, $this->rules);
 
         $project = Projects::find($id);
 
-        $project->update($request->all());
+        $data = $request->all();
+        $data['project_members'] = implode(',', $data['project_members']);
+
+        $project->update($data);
 
         Session::flash('flash_message', 'Congratulations, Project updated successfully!');
 
@@ -105,4 +161,6 @@ class ProjectsController extends BaseController
 
         return redirect("projects");
     }
+
+
 }
