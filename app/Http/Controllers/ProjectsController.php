@@ -28,7 +28,10 @@ class ProjectsController extends BaseController
     {
         $user = $this->user;
 
-        $projects = Projects::latest()->get();
+        $projects = Projects::leftJoin('users', 'users.id', '=', 'projects.project_owner')
+            ->select('projects.*', 'users.name')
+            ->orderBy('projects.id', 'desc')
+            ->get();
 
         return view('projects.index', compact('projects', 'user'));
     }
@@ -54,8 +57,17 @@ class ProjectsController extends BaseController
         /**
          * @todo Refactor this section to follow DRY concept
          */
-        $data_owners = User::select('id', 'name')->whereIn('role', [1, 2])->orderBy('name', 'asc')->get()->toArray();
-        $data_members = User::select('id', 'name')->whereIn('role', [2, 3])->orderBy('name', 'asc')->get()->toArray();
+        //$owners = User::getUserByRole([1,2]);
+        $data_owners = User::select('id', 'name')
+            ->whereIn('role', [1, 2])
+            ->orderBy('name', 'asc')
+            ->get()
+            ->toArray();
+        $data_members = User::select('id', 'name')
+            ->whereIn('role', [2, 3])
+            ->orderBy('name', 'asc')
+            ->get()
+            ->toArray();
 
         $owners = array();
         if($data_owners){

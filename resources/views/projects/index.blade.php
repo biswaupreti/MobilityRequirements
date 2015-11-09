@@ -32,7 +32,7 @@
                 <th scope="row">{{ $i }}</th>
                 <td><a href="{{ url('/projects', [$project->id]) }}">{{ $project->title }}</a></td>
                 <td>{{ $project->description }}</td>
-                <td>{{ $project->project_owner }}</td>
+                <td>{{ $project->name }}</td>
                 <td>{{ $project->created_at }}</td>
                 <td>
                     <a href="{{ url('/projects', [$project->id, 'edit']) }}" title="Edit User Information!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">
