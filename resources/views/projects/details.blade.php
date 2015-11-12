@@ -14,6 +14,14 @@
             <dd>{{ $project->owner }}</dd>
             <dt>Created On</dt>
             <dd>{{ $project->created_at }}</dd>
+            <dt>Status</dt>
+            <dd>
+                @if($project->status == '1')
+                    <span class="green">{{ 'Open' }}</span>
+                @else
+                    <span class="red">{{ 'Closed' }}</span>
+                @endif
+            </dd>
         </dl>
     </div>
 

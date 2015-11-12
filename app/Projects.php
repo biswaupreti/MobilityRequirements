@@ -11,7 +11,8 @@ class Projects extends Model
         'title',
         'description',
         'project_owner',
-        'project_members'
+        'project_members',
+        'status'
     ];
     
 }

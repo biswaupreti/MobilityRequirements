@@ -18,10 +18,11 @@
         <thead>
         <tr>
             <th width="5%">#</th>
-            <th width="20%">Project Title</th>
+            <th width="18%">Project Title</th>
             <th width="30%">Description</th>
-            <th width="15%">Project Owner</th>
-            <th width="15%">Created On</th>
+            <th width="10%">Project Owner</th>
+            <th width="12%">Created On</th>
+            <th width="10%">Status</th>
             <th width="15%">Action</th>
         </tr>
         </thead>
@@ -34,6 +35,13 @@
                 <td>{{ $project->description }}</td>
                 <td>{{ $project->name }}</td>
                 <td>{{ $project->created_at }}</td>
+                <td>
+                    @if($project->status == '1')
+                        <span class="green">{{ 'Open' }}</span>
+                    @else
+                        <span class="red">{{ 'Closed' }}</span>
+                    @endif
+                </td>
                 <td>
                     <a href="{{ url('/projects', [$project->id, 'edit']) }}" title="Edit User Information!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit

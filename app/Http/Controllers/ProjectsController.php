@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Session;
 class ProjectsController extends BaseController
 {
 
-    private $rules = ['title' => 'required|min:5', 'project_owner' => 'required', 'project_members' => 'required'];
+    private $rules = ['title' => 'required|min:5', 'project_owner' => 'required', 'project_members' => 'required', 'status' => 'required'];
 
     /**
      * @return \Illuminate\View\View

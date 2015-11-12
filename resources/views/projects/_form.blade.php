@@ -20,6 +20,12 @@
 </div>
 
 <div class="form-group">
+    {!! Form::label('status', 'Status:') !!}
+    {!! Form::select('status',
+     array('1' => 'Open', '0' => 'Close'), null, ['class' => 'form-control', 'required' => 'required']) !!}
+</div>
+
+<div class="form-group">
     {!! Form::submit($submitButtonText, ['class' => 'btn btn-primary']) !!}
     <a class="btn btn-default" onclick="history.go(-1)">Cancel</a>
 </div>
