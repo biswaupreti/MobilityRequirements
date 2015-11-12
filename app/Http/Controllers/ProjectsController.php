@@ -54,37 +54,8 @@ class ProjectsController extends BaseController
      */
     public function create()
     {
-        /**
-         * @todo Refactor this section to follow DRY concept
-         */
-        //$owners = User::getUserByRole([1,2]);
-        $data_owners = User::select('id', 'name')
-            ->whereIn('role', [1, 2])
-            ->orderBy('name', 'asc')
-            ->get()
-            ->toArray();
-        $data_members = User::select('id', 'name')
-            ->whereIn('role', [2, 3])
-            ->orderBy('name', 'asc')
-            ->get()
-            ->toArray();
-
-        $owners = array();
-        if($data_owners){
-            foreach($data_owners as $owner){
-                $owners[$owner['id']] = $owner['name'];
-            }
-        }
-
-        $members = array();
-        if($data_members){
-            foreach($data_members as $member){
-                $members[$member['id']] = $member['name'];
-            }
-        }
-        /**
-         * @endTodo
-         */
+        $owners = User::getUsersByRoles([1,2]);
+        $members = User::getUsersByRoles([2,3]);
 
         return view('projects.create', compact('owners', 'members'));
     }
@@ -114,28 +85,8 @@ class ProjectsController extends BaseController
         $project = Projects::find($id);
         $selected_members = explode(',', $project->project_members);
 
-        /**
-         * @todo Refactor this section to follow DRY concept
-         */
-        $data_owners = User::select('id', 'name')->whereIn('role', [1, 2])->orderBy('name', 'asc')->get()->toArray();
-        $data_members = User::select('id', 'name')->whereIn('role', [2, 3])->orderBy('name', 'asc')->get()->toArray();
-
-        $owners = array();
-        if($data_owners){
-            foreach($data_owners as $owner){
-                $owners[$owner['id']] = $owner['name'];
-            }
-        }
-
-        $members = array();
-        if($data_members){
-            foreach($data_members as $member){
-                $members[$member['id']] = $member['name'];
-            }
-        }
-        /**
-         * @endTodo
-         */
+        $owners = User::getUsersByRoles([1,2]);
+        $members = User::getUsersByRoles([2,3]);
 
         return view('projects.edit', compact('project', 'owners', 'members', 'selected_members'));
     }
@@ -173,6 +124,7 @@ class ProjectsController extends BaseController
 
         return redirect("projects");
     }
+
 
 
 }

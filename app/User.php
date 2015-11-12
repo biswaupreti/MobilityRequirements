@@ -40,22 +40,32 @@ class User extends Model implements AuthenticatableContract,
 
 
     /**
-     * Get user information based on the user role
+     * Get user by role id and return in [id] => [name] format
      *
-     * @param $role
+     * @param array $roles
+     * @return array
      */
-    public static function getUserByRole($roles)
+    public static function getUsersByRoles($roles = array())
     {
-        if(empty($roles)){
+        if(!is_array($roles) && empty($roles)){
             return false;
         }
 
-        $users = DB::table('users')
-                    ->select('id', 'name')
-                    ->whereIn('role', $roles)
-                    ->orderBy('name', 'asc')
-                    ->get();
+        $users = array();
+        $users_array = User::select('id', 'name')
+            ->whereIn('role', $roles)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->toArray();
+
+        if($users_array){
+            foreach($users_array as $user){
+                $users[$user['id']] = $user['name'];
+            }
+        }
 
         return $users;
+
     }
+
 }
