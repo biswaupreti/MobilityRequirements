@@ -24,7 +24,7 @@
     @foreach($requirements as $req)
         <tr>
             <th scope="row">{{ $i }}</th>
-            <td><a href="{{ url('/requirements', [$req->id, 'edit']) }}">{{ $req->title }}</a></td>
+            <td><a href="{{ url('/requirements', [$req->id]) }}">{{ $req->title }}</a></td>
             <td>{{ $req->description }}</td>
             <td>{{ $req->created_at }}</td>
             <td>

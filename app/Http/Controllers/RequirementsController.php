@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\ContextScenarioUserAppInteraction;
 use App\Requirements;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use Psy\Context;
 
 class RequirementsController extends BaseController
 {
     private $rules = ['title' => 'required|min:5', 'description' => 'required', 'project_id' => 'required'];
+
     /**
      * Display a listing of the resource.
      *
@@ -57,7 +60,14 @@ class RequirementsController extends BaseController
      */
     public function show($id)
     {
-        //
+        $requirement = Requirements::find($id);
+        $context = ContextScenarioUserAppInteraction::leftJoin('users', 'users.id', '=', 'context_scenario_user_app_interaction.user_id')
+                                                    ->leftJoin('context_scenario_ideal_way AS context', 'context.id', '=', 'context_scenario_user_app_interaction.context_id')
+                                                    ->select('context_scenario_user_app_interaction.*', 'users.name AS user_name', 'context.context_name')
+                                                    ->where('requirement_id', $id)
+                                                    ->latest()->get();
+
+        return view('requirements.details', compact('requirement', 'context'));
     }
 
     /**
