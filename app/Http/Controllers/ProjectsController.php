@@ -43,7 +43,11 @@ class ProjectsController extends BaseController
      */
     public function show($id)
     {
-        $project = Projects::find($id);
+        $project = Projects::leftJoin('users', 'users.id', '=', 'projects.project_owner')
+            ->select('projects.*', 'users.name as owner')
+            ->where('projects.id', $id)
+            ->first();
+
         $requirements = Requirements::where('project_id', $id)->latest()->get();
 
         return view('projects.details', compact('project', 'requirements'));

@@ -35,13 +35,7 @@ class ContextController extends BaseController
     {
         $requirement_id = Input::get('requirement');
 
-        $context_data = ContextScenarioIdealWay::select('id', 'context_name')->get()->toArray();
-        $context_ideal_way = array();
-        if($context_data){
-            foreach($context_data as $item){
-                $context_ideal_way[$item['id']] = $item['context_name'];
-            }
-        }
+        $context_ideal_way = ContextScenarioIdealWay::getContextIdealWayKeyValue();
 
         return view('context.create', compact('requirement_id', 'context_ideal_way'));
     }
@@ -81,7 +75,11 @@ class ContextController extends BaseController
      */
     public function edit($id)
     {
-        //
+        $context = ContextScenarioUserAppInteraction::find($id);
+        $requirement_id = $context->requirement_id;
+        $context_ideal_way = ContextScenarioIdealWay::getContextIdealWayKeyValue();
+
+        return view('context.edit', compact('context', 'requirement_id', 'context_ideal_way'));
     }
 
     /**
@@ -93,7 +91,25 @@ class ContextController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, $this->rules);
+
+        $context = ContextScenarioUserAppInteraction::find($id);
+        $updateData = $request->all();
+
+        if(!isset($updateData["accompanying"])){
+            $updateData["accompanying"] = '0';
+        }
+        if(!isset($updateData["intermittent"])){
+            $updateData["intermittent"] = '0';
+        }
+        if(!isset($updateData["interrupting"])){
+            $updateData["interrupting"] = '0';
+        }
+
+        $context->update($updateData);
+
+        Session::flash('flash_message', 'Congratulations, Data updated successfully!');
+        return redirect("requirements/$request->requirement_id");
     }
 
     /**
@@ -104,6 +120,14 @@ class ContextController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        $context = ContextScenarioUserAppInteraction::findOrFail($id);
+        $requirement_id = $context->requirement_id;
+        $context->delete();
+
+        Session::flash('flash_message', 'Data successfully deleted!');
+
+        return redirect("requirements/$requirement_id");
     }
+
+
 }
