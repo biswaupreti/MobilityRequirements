@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 use Psy\Context;
 
 class RequirementsController extends BaseController
@@ -33,7 +34,13 @@ class RequirementsController extends BaseController
     public function create()
     {
         $project_id = Input::get('project');
-        return view('requirements.create', compact('project_id'));
+
+        $breadcrumbs = array(
+            'Projects' => '/projects',
+            'All Requirements' => "/projects/$project_id"
+        );
+
+        return view('requirements.create', compact('project_id', 'breadcrumbs'));
     }
 
     /**
@@ -67,7 +74,12 @@ class RequirementsController extends BaseController
                                                     ->where('requirement_id', $id)
                                                     ->latest()->get();
 
-        return view('requirements.details', compact('requirement', 'context'));
+        $breadcrumbs = array(
+            'Projects' => '/projects',
+            'All Requirements' => "/projects/$requirement->project_id"
+        );
+
+        return view('requirements.details', compact('requirement', 'context', 'breadcrumbs'));
     }
 
     /**
@@ -80,7 +92,13 @@ class RequirementsController extends BaseController
     {
         $requirement = Requirements::find($id);
         $project_id = $requirement->project_id;
-        return view('requirements.edit', compact('requirement', 'project_id'));
+
+        $breadcrumbs = array(
+            'Projects' => '/projects',
+            'All Requirements' => "/projects/$project_id"
+        );
+
+        return view('requirements.edit', compact('requirement', 'project_id', 'breadcrumbs'));
     }
 
     /**

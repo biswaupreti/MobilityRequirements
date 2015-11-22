@@ -11,6 +11,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 /**
  * Class ProjectsController
@@ -20,6 +21,16 @@ class ProjectsController extends BaseController
 {
 
     private $rules = ['title' => 'required|min:5', 'project_owner' => 'required', 'project_members' => 'required', 'status' => 'required'];
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->breadcrumbs = array(
+            'Projects' => '/projects'
+        );
+        View::share('breadcrumbs', $this->breadcrumbs);
+    }
 
     /**
      * @return \Illuminate\View\View

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ContextScenarioUserAppInteraction;
 use App\ContextScenarioIdealWay;
+use App\Requirements;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -34,10 +35,17 @@ class ContextController extends BaseController
     public function create()
     {
         $requirement_id = Input::get('requirement');
+        $project = Requirements::select('project_id')->where('id', $requirement_id)->first();
 
         $context_ideal_way = ContextScenarioIdealWay::getContextIdealWayKeyValue();
 
-        return view('context.create', compact('requirement_id', 'context_ideal_way'));
+        $breadcrumbs = array(
+            'Projects' => "/projects",
+            'All Requirements' => "/projects/$project->project_id",
+            'All Context' => "requirements/$requirement_id"
+        );
+
+        return view('context.create', compact('requirement_id', 'context_ideal_way', 'breadcrumbs'));
     }
 
     /**
@@ -77,9 +85,16 @@ class ContextController extends BaseController
     {
         $context = ContextScenarioUserAppInteraction::find($id);
         $requirement_id = $context->requirement_id;
+        $project = Requirements::select('project_id')->where('id', $requirement_id)->first();
         $context_ideal_way = ContextScenarioIdealWay::getContextIdealWayKeyValue();
 
-        return view('context.edit', compact('context', 'requirement_id', 'context_ideal_way'));
+        $breadcrumbs = array(
+            'Projects' => "/projects",
+            'All Requirements' => "/projects/$project->project_id",
+            'All Context' => "requirements/$requirement_id"
+        );
+
+        return view('context.edit', compact('context', 'requirement_id', 'context_ideal_way', 'breadcrumbs'));
     }
 
     /**

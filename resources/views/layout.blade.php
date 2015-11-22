@@ -19,6 +19,15 @@
                     </div>
                 @endif
 
+                @if(isset($breadcrumbs))
+                    <ol class="breadcrumb">
+                        <li><a href="{{ url('/') }}">Dashboard</a></li>
+                        @foreach($breadcrumbs as $key => $url)
+                            <li><a href="{{ url($url) }}">{{ $key }}</a></li>
+                        @endforeach
+                    </ol>
+                @endif
+
                 @if(Session::has('flash_message'))
                     <div class="alert alert-success">
                         {{ Session::get('flash_message') }}

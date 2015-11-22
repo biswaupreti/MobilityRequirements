@@ -12,6 +12,8 @@ class BaseController extends Controller
 {
     public $user = '';
 
+    public $breadcrumbs;
+
     public function __construct()
     {
         $this->middleware('auth');
