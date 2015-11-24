@@ -9,17 +9,15 @@
 
         <div class="row">
 
-            @if($authUser->role == '1')
             <div class="col-md-3 dashboard-menu">
                 <ul>
+                    @if($authUser->role == '1')
                     <li><a href="{{ url('/projects') }}" class="btn btn-primary">Project Management</a> </li>
-                    {{--<li><a href="javascript:;" class="btn btn-primary">Requirement Management</a> </li>--}}
-                    {{--<li><a href="javascript:;" class="btn btn-primary">Context Management</a> </li>--}}
-                    {{--<li><a href="javascript:;" class="btn btn-primary">Scenario Management</a> </li>--}}
                     <li><a href="{{ url('/users') }}" class="btn btn-primary">User Management</a> </li>
+                    @endif
+                    <li><a href="{{ url('/context-ideal-way') }}" class="btn btn-primary">Situational Context - Ideal Way</a> </li>
                 </ul>
             </div>
-            @endif
 
             <div class="col-md-9 dashboard-content">
                 <div class="row">

@@ -10,6 +10,7 @@ Route::resource('users', 'UserController');
 Route::resource('projects', 'ProjectsController');
 Route::resource('requirements', 'RequirementsController');
 Route::resource('context', 'ContextController');
+Route::resource('context-ideal-way', 'ContextIdealWayController');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
