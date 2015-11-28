@@ -42,21 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="2015_11_02_125300_add_foreign_key_in_project_id_to_requirements_table.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="2015_11_02_125300_add_foreign_key_in_project_id_to_requirements_table.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/database/migrations/2015_11_02_125300_add_foreign_key_in_project_id_to_requirements_table.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.75">
-              <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="67" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="2015_11_28_184715_add_foreign_key_in_user_id_to_requirements_table.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/database/migrations/2015_11_28_184715_add_foreign_key_in_user_id_to_requirements_table.php">
-          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.34035656">
-              <caret line="15" column="64" selection-start-line="15" selection-start-column="64" selection-end-line="15" selection-end-column="64" />
+              <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -874,16 +864,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2015_11_02_125300_add_foreign_key_in_project_id_to_requirements_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.75">
-          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2015_11_28_184715_add_foreign_key_in_user_id_to_requirements_table.php">
-      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34035656">
-          <caret line="15" column="64" selection-start-line="15" selection-start-column="64" selection-end-line="15" selection-end-column="64" />
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="67" />
           <folding />
         </state>
       </provider>
