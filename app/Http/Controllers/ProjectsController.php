@@ -59,7 +59,9 @@ class ProjectsController extends BaseController
             ->where('projects.id', $id)
             ->first();
 
-        $requirements = Requirements::where('project_id', $id)->latest()->get();
+        $requirements = Requirements::leftJoin('users', 'users.id', '=', 'requirements.user_id')
+                                    ->select('requirements.*', 'users.name as created_by')
+                                    ->where('project_id', $id)->latest()->get();
 
         return view('projects.details', compact('project', 'requirements'));
     }
@@ -98,6 +100,12 @@ class ProjectsController extends BaseController
     public function edit($id)
     {
         $project = Projects::find($id);
+
+        if($project->project_owner != $this->user['id']){
+            Session::flash('flash_message_warning', 'Sorry, you do not have enough privilege to make this change!');
+            return redirect('projects');
+        }
+
         $selected_members = explode(',', $project->project_members);
 
         $owners = User::getUsersByRoles([1,2]);
@@ -133,6 +141,12 @@ class ProjectsController extends BaseController
     public function destroy($id)
     {
         $project = Projects::findOrFail($id);
+
+        if($project->project_owner != $this->user['id']){
+            Session::flash('flash_message_warning', 'Sorry, you do not have enough privilege to make this change!');
+            return redirect('projects');
+        }
+
         $project->delete();
 
         Session::flash('flash_message', 'Project successfully deleted!');

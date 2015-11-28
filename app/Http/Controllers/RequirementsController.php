@@ -52,7 +52,11 @@ class RequirementsController extends BaseController
     public function store(Request $request)
     {
         $this->validate($request, $this->rules);
-        Requirements::create($request->all());
+
+        $data = $request->all();
+        $data['user_id'] = $this->user['id'];
+
+        Requirements::create($data);
 
         Session::flash('flash_message', 'Congratulations, New requirement added successfully!');
 
@@ -93,6 +97,11 @@ class RequirementsController extends BaseController
         $requirement = Requirements::find($id);
         $project_id = $requirement->project_id;
 
+        if($requirement->user_id != $this->user['id']){
+            Session::flash('flash_message_warning', 'Sorry, you do not have enough privilege to make this change!');
+            return redirect("projects/$project_id");
+        }
+
         $breadcrumbs = array(
             'Projects' => '/projects',
             'All Requirements' => "/projects/$project_id"
@@ -131,6 +140,12 @@ class RequirementsController extends BaseController
     {
         $requirement = Requirements::findOrFail($id);
         $project_id = $requirement->project_id;
+
+        if($requirement->user_id != $this->user['id']){
+            Session::flash('flash_message_warning', 'Sorry, you do not have enough privilege to make this change!');
+            return redirect("projects/$project_id");
+        }
+
         $requirement->delete();
 
         Session::flash('flash_message', 'Requirement successfully deleted!');

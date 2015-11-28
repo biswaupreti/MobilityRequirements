@@ -85,6 +85,12 @@ class ContextController extends BaseController
     {
         $context = ContextScenarioUserAppInteraction::find($id);
         $requirement_id = $context->requirement_id;
+
+        if($context->user_id != $this->user['id']){
+            Session::flash('flash_message_warning', 'Sorry, you do not have enough privilege to make this change!');
+            return redirect("requirements/$requirement_id");
+        }
+
         $project = Requirements::select('project_id')->where('id', $requirement_id)->first();
         $context_ideal_way = ContextScenarioIdealWay::getContextIdealWayKeyValue();
 
@@ -137,6 +143,12 @@ class ContextController extends BaseController
     {
         $context = ContextScenarioUserAppInteraction::findOrFail($id);
         $requirement_id = $context->requirement_id;
+
+        if($context->user_id != $this->user['id']){
+            Session::flash('flash_message_warning', 'Sorry, you do not have enough privilege to make this change!');
+            return redirect("requirements/$requirement_id");
+        }
+
         $context->delete();
 
         Session::flash('flash_message', 'Data successfully deleted!');

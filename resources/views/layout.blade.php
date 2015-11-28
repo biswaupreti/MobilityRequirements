@@ -45,5 +45,14 @@
             </div>
         </div>
         @yield('footer')
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.alert').click(function(){
+                    $(this).fadeOut('slow');
+                });
+            });
+        </script>
+
     </body>
 </html>

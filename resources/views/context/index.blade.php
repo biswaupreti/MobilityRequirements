@@ -36,14 +36,18 @@
             <td>{{ $row->user_name }}</td>
             <td>{{ $row->created_at }}</td>
             <td>
-                <a href="{{ url('/context', [$row->id, 'edit']) }}" title="Edit!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">
-                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
-                </a>
-                {!! Form::open(['method' => 'DELETE', 'route' => ['context.destroy', $row->id], 'onsubmit' => 'return confirm("Are you sure you want to delete?")']) !!}
-                <button type="submit" class="btn btn-danger btn-sm">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
-                </button>
-                {!! Form::close() !!}
+                @if($row->user_id === $authUser->id)
+                    <a href="{{ url('/context', [$row->id, 'edit']) }}" title="Edit!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+                    </a>
+                    {!! Form::open(['method' => 'DELETE', 'route' => ['context.destroy', $row->id], 'onsubmit' => 'return confirm("Are you sure you want to delete?")']) !!}
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
+                    </button>
+                    {!! Form::close() !!}
+                @else
+                    <span>--</span>
+                @endif
             </td>
         </tr>
         <?php $i++; ?>

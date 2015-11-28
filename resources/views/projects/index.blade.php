@@ -27,7 +27,10 @@
         </tr>
         </thead>
         <tbody>
-        <?php $i = 1; ?>
+        <?php
+            $i = 1;
+            $is_disabled = '';
+        ?>
         @foreach($projects as $project)
             <tr>
                 <th scope="row">{{ $i }}</th>
@@ -43,14 +46,18 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ url('/projects', [$project->id, 'edit']) }}" title="Edit User Information!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
-                    </a>
-                    {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $project->id], 'onsubmit' => 'return confirm("Are you sure you want to delete?")']) !!}
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
-                    </button>
-                    {!! Form::close() !!}
+                    @if($project->project_owner === $authUser->id)
+                        <a href="{{ url('/projects', [$project->id, 'edit']) }}" title="Edit User Information!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+                        </a>
+                        {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $project->id], 'onsubmit' => 'return confirm("Are you sure you want to delete?")']) !!}
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
+                        </button>
+                        {!! Form::close() !!}
+                    @else
+                        <span>--</span>
+                    @endif
                 </td>
             </tr>
             <?php $i++; ?>
