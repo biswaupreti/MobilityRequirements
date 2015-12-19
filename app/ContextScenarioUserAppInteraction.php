@@ -17,9 +17,6 @@ class ContextScenarioUserAppInteraction extends Model
         'requirement_id',
         'user_id',
         'context_id',
-        'scenario',
-        'accompanying',
-        'intermittent',
-        'interrupting'
+        'scenario'
     ];
 }

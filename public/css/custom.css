@@ -88,3 +88,6 @@ body{
 .green{
     color: #0A0;
 }
+.frm_ways_of_interaction .form-group{
+    margin-bottom: 8px;
+}

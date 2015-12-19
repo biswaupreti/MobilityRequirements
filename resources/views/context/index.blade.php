@@ -13,12 +13,12 @@
     <thead>
     <tr>
         <th width="5%">#</th>
-        <th width="10%">Context</th>
+        <th width="15%">Context</th>
         <th width="40%">Scenario</th>
         <th width="20%">Ways of Interaction</th>
         <th width="10%">Added By</th>
         {{--<th width="10%">Created On</th>--}}
-        <th width="15%">Action</th>
+        <th width="10%">Action</th>
     </tr>
     </thead>
     <tbody>
@@ -26,12 +26,36 @@
     @foreach($context as $row)
         <tr>
             <th scope="row">{{ $i }}</th>
-            <td>{{ $row->context_name }}</td>
+            <td>
+                {{ $row->context_name }} <br/><br/>
+                <select class="context-rating" name="rating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4" selected="selected">4</option>
+                    <option value="5">5</option>
+                </select>
+                <span class="small">Ratings: 4/5</span>
+            </td>
             <td>{{ $row->scenario }}</td>
             <td>
-                {{ ($row->accompanying) ? 'Accompanying; ' : '' }}
-                {{ ($row->intermittent) ? 'Intermittent; ' : '' }}
-                {{ ($row->interrupting) ? 'Interrupting; ' : '' }}
+                <form action="#" class="frm_ways_of_interaction">
+                    <div class="form-group">
+                        {!! Form::checkbox('accompanying', '1') !!}
+                        <span>Accompanying (<span class="count">0</span>)</span>
+                    </div>
+                    <div class="form-group">
+                        {!! Form::checkbox('intermittent', '1') !!}
+                        <span>Intermittent (<span class="count">0</span>)</span>
+                    </div>
+                    <div class="form-group">
+                        {!! Form::checkbox('interrupting', '1') !!}
+                        <span>Interrupting  (<span class="count">0</span>)</span>
+                    </div>
+                </form>
+                {{--{{ ($row->accompanying) ? 'Accompanying; ' : '' }}--}}
+                {{--{{ ($row->intermittent) ? 'Intermittent; ' : '' }}--}}
+                {{--{{ ($row->interrupting) ? 'Interrupting; ' : '' }}--}}
             </td>
             <td>{{ $row->user_name }}</td>
 {{--            <td>{{ $row->created_at }}</td>--}}
