@@ -57,6 +57,12 @@ class ContextController extends BaseController
     public function store(Request $request)
     {
         $this->validate($request, $this->rules);
+        $checkContextExists = ContextScenarioUserAppInteraction::get()->where('context_id', $request->all()['context_id'])->toArray();
+        if($checkContextExists){
+            Session::flash('flash_message_warning', 'Sorry, this context already exists!!!');
+            return redirect("requirements/$request->requirement_id");
+        }
+
         ContextScenarioUserAppInteraction::create($request->all());
 
         Session::flash('flash_message', 'Congratulations, New context added successfully!');

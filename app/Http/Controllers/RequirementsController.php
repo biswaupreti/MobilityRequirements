@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ContextScenarioUserAppInteraction;
+use App\ContextScenarioIdealWay;
 use App\Requirements;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -56,12 +57,34 @@ class RequirementsController extends BaseController
         $data = $request->all();
         $data['user_id'] = $this->user['id'];
 
-        Requirements::create($data);
+        try{
+            $new_requirement = Requirements::create($data);
 
-        Session::flash('flash_message', 'Congratulations, New requirement added successfully!');
+            if($new_requirement->id){
+                $context_ideal_ways = ContextScenarioIdealWay::get();
+                if($context_ideal_ways){
+                    foreach($context_ideal_ways as $row){
+                        $context_new_data_arr = array(
+                            'requirement_id' => $new_requirement->id,
+                            'user_id' => $data['user_id'],
+                            'context_id' => $row->id,
+                            'accompanying' => $row->accompanying,
+                            'intermittent' => $row->intermittent,
+                            'interrupting' => $row->interrupting
+                        );
+                        ContextScenarioUserAppInteraction::insert($context_new_data_arr);
+                    }
+                }
+            }
+            Session::flash('flash_message', 'Congratulations, New requirement added successfully!');
+        }
+        catch(Exception $e){
+            Session::flash('flash_message_error', 'Sorry, An error occurred while creating new requirement!');
+        }
 
         return redirect("projects/$request->project_id");
     }
+
 
     /**
      * Display the specified resource.
@@ -76,7 +99,7 @@ class RequirementsController extends BaseController
                                                     ->leftJoin('context_scenario_ideal_way AS context', 'context.id', '=', 'context_scenario_user_app_interaction.context_id')
                                                     ->select('context_scenario_user_app_interaction.*', 'users.name AS user_name', 'context.context_name')
                                                     ->where('requirement_id', $id)
-                                                    ->latest()->get();
+                                                    ->orderBy('context_id', 'asc')->get();
 
         $breadcrumbs = array(
             'Projects' => '/projects',

@@ -14,7 +14,7 @@
         <th width="5%">#</th>
         <th width="20%">Situational Context</th>
         <th width="45%">Typical Scenario</th>
-        <th width="30%">Ideal Ways</th>
+        <th width="30%">Ideal Ways of Interaction</th>
     </tr>
     </thead>
     <tbody>
