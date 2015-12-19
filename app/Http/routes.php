@@ -12,6 +12,8 @@ Route::resource('requirements', 'RequirementsController');
 Route::resource('context', 'ContextController');
 Route::resource('context-ideal-way', 'ContextIdealWayController');
 
+Route::post('save-context-ratings', 'ContextController@saveContextRatings');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

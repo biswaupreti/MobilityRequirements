@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\ContextScenarioUserAppInteraction;
 use App\ContextScenarioIdealWay;
+use App\ContextRatings;
 use App\Requirements;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
@@ -160,6 +162,37 @@ class ContextController extends BaseController
         Session::flash('flash_message', 'Data successfully deleted!');
 
         return redirect("requirements/$requirement_id");
+    }
+
+
+    public function saveContextRatings(Request $request)
+    {
+        try{
+            $user_id = $this->user['id'];
+            $context_id = $request->all()['context_id'];
+            $data = array(
+                'context_id' => $context_id,
+                'user_id' => $user_id,
+                'rating' => $request->all()['rating'],
+            );
+            $_rating_exists = ContextRatings::where('user_id', $user_id)
+                                                ->where('context_id', $context_id)
+                                                ->exists();
+            if($_rating_exists){
+                ContextRatings::where('user_id', $user_id)
+                                ->where('context_id', $context_id)
+                                ->update($data);
+            } else{
+                ContextRatings::insert($data);
+            }
+            $avg_rating = ContextRatings::select(DB::raw('avg(rating) AS avg_rating'))
+                                        ->where()->get();
+
+            return response()->json(['status' => 'success']);
+        }
+        catch(Exception $e){
+            return response()->json(['status' => 'error']);
+        }
     }
 
 

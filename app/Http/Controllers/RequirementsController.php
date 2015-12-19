@@ -8,6 +8,7 @@ use App\Requirements;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
@@ -97,8 +98,20 @@ class RequirementsController extends BaseController
         $requirement = Requirements::find($id);
         $context = ContextScenarioUserAppInteraction::leftJoin('users', 'users.id', '=', 'context_scenario_user_app_interaction.user_id')
                                                     ->leftJoin('context_scenario_ideal_way AS context', 'context.id', '=', 'context_scenario_user_app_interaction.context_id')
-                                                    ->select('context_scenario_user_app_interaction.*', 'users.name AS user_name', 'context.context_name')
+                                                    ->leftJoin('context_ratings as CR', 'CR.context_id', '=', 'context_scenario_user_app_interaction.id')
+                                                    ->leftJoin('context_ratings as CR1', function($join)
+                                                    {
+                                                        $join->on('CR1.context_id', '=', 'context_scenario_user_app_interaction.id');
+                                                        $join->where('CR1.user_id','=', $this->user['id']);
+                                                    })
+                                                    ->select('context_scenario_user_app_interaction.*',
+                                                                'users.name AS user_name',
+                                                                'context.context_name',
+                                                                'CR1.rating',
+                                                                DB::raw('avg(CR.rating) AS avg_rating, count(CR.id) AS rating_count')
+                                                            )
                                                     ->where('requirement_id', $id)
+                                                    ->groupBy('context_scenario_user_app_interaction.id')
                                                     ->orderBy('context_id', 'asc')->get();
 
         $breadcrumbs = array(

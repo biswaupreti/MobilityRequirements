@@ -2,11 +2,6 @@
     <div class="col-md-10">
         <h3>Context Scenarios</h3>
     </div>
-    {{--<div class="col-md-2">--}}
-        {{--<button class="btn btn-primary"  style="margin-top: 20px;">--}}
-            {{--<a href="{{ url('context/create/?requirement='. $requirement->id) }}"  style="color: #ffffff;">Create New</a>--}}
-        {{--</button>--}}
-    {{--</div>--}}
 </div>
 
 <table class="table table-striped" width="100%">
@@ -17,7 +12,6 @@
         <th width="40%">Scenario</th>
         <th width="20%">Ways of Interaction</th>
         <th width="10%">Added By</th>
-        {{--<th width="10%">Created On</th>--}}
         <th width="10%">Action</th>
     </tr>
     </thead>
@@ -29,13 +23,17 @@
             <td>
                 {{ $row->context_name }} <br/><br/>
                 <select class="context-rating" name="rating">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4" selected="selected">4</option>
-                    <option value="5">5</option>
+                    <option value=""></option>
+                    <option value="1" data-html="{{ $row->id }}" {{{ ($row->rating == 1) ? "selected='selected'" : '' }}}>1</option>
+                    <option value="2" data-html="{{ $row->id }}" {{{ ($row->rating == 2) ? "selected='selected'" : '' }}}>2</option>
+                    <option value="3" data-html="{{ $row->id }}" {{{ ($row->rating == 3) ? "selected='selected'" : '' }}}>3</option>
+                    <option value="4" data-html="{{ $row->id }}" {{{ ($row->rating == 4) ? "selected='selected'" : '' }}}>4</option>
+                    <option value="5" data-html="{{ $row->id }}" {{{ ($row->rating == 5) ? "selected='selected'" : '' }}}>5</option>
                 </select>
-                <span class="small">Ratings: 4/5</span>
+                <span class="small">Ratings:
+                    <span class="average_rating">{{ number_format($row->avg_rating, 1) }}</span> / 5
+                    by {{ $row->rating_count }} {{{ ($row->rating_count > 1) ? 'users' : 'user' }}}
+                </span>
             </td>
             <td>{{ $row->scenario }}</td>
             <td>
@@ -53,22 +51,13 @@
                         <span>Interrupting  (<span class="count">0</span>)</span>
                     </div>
                 </form>
-                {{--{{ ($row->accompanying) ? 'Accompanying; ' : '' }}--}}
-                {{--{{ ($row->intermittent) ? 'Intermittent; ' : '' }}--}}
-                {{--{{ ($row->interrupting) ? 'Interrupting; ' : '' }}--}}
             </td>
             <td>{{ $row->user_name }}</td>
-{{--            <td>{{ $row->created_at }}</td>--}}
             <td>
                 @if($row->user_id === $authUser->id)
                     <a href="{{ url('/context', [$row->id, 'edit']) }}" title="Edit!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
                     </a>
-                    {{--{!! Form::open(['method' => 'DELETE', 'route' => ['context.destroy', $row->id], 'onsubmit' => 'return confirm("Are you sure you want to delete?")']) !!}--}}
-                    {{--<button type="submit" class="btn btn-danger btn-sm">--}}
-                        {{--<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete--}}
-                    {{--</button>--}}
-                    {{--{!! Form::close() !!}--}}
                 @else
                     <span>--</span>
                 @endif
@@ -78,3 +67,24 @@
     @endforeach
     </tbody>
 </table>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        // jQuery Bar Rating - bootstrap stars
+        $(".context-rating").barrating({
+            theme: 'bootstrap-stars',
+            onSelect:function(value,text) {
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo URL::to('save-context-ratings') ?>',
+                    data: {'rating': value, 'context_id': text, '_token': $('meta[name=csrf-token]').attr('content')},
+                    success: function(data) {
+                        console.log("Data Sent");
+                    }
+                })
+            }
+        });
+
+
+    });
+</script>
