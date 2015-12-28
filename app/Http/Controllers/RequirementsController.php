@@ -158,8 +158,19 @@ class RequirementsController extends BaseController
         $this->validate($request, $this->rules);
 
         $requirement = Requirements::find($id);
+        $updateData = $request->all();
 
-        $requirement->update($request->all());
+        if(!isset($updateData["accompanying"])){
+            $updateData["accompanying"] = '0';
+        }
+        if(!isset($updateData["intermittent"])){
+            $updateData["intermittent"] = '0';
+        }
+        if(!isset($updateData["interrupting"])){
+            $updateData["interrupting"] = '0';
+        }
+
+        $requirement->update($updateData);
 
         Session::flash('flash_message', 'Congratulations, Requirement updated successfully!');
 

@@ -12,6 +12,19 @@
             <dd>{{ $requirement->description }}</dd>
             <dt>Created On</dt>
             <dd>{{ $requirement->created_at }}</dd>
+            <hr/>
+            <dt>Ways of Interactions</dt>
+            <dd>
+                @if($requirement->accompanying)
+                    Accompanying<br/>
+                @endif
+                @if($requirement->intermittent)
+                    Intermittent<br/>
+                @endif
+                @if($requirement->interrupting)
+                    Interrupting
+                @endif
+            </dd>
         </dl>
     </div>
 

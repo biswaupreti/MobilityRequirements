@@ -10,6 +10,9 @@ class Requirements extends Model
         'title',
         'description',
         'project_id',
-        'user_id'
+        'user_id',
+        'accompanying',
+        'intermittent',
+        'interrupting'
     ];
 }
