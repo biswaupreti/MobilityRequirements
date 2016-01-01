@@ -185,10 +185,11 @@ class ContextController extends BaseController
             } else{
                 ContextRatings::insert($data);
             }
-            $avg_rating = ContextRatings::select(DB::raw('avg(rating) AS avg_rating'))
-                                        ->where()->get();
-
-            return response()->json(['status' => 'success']);
+            $ratings = ContextRatings::select(DB::raw('avg(rating) AS avg_rating, count(id) AS rating_count'))
+                                        ->where('context_id', $context_id)
+                                        ->first();
+            $avg_value = number_format($ratings->avg_rating, 1);
+            return response()->json(['status' => 'success', 'avg_rating' => $avg_value, 'rating_count' => $ratings->rating_count]);
         }
         catch(Exception $e){
             return response()->json(['status' => 'error']);

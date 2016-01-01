@@ -31,8 +31,8 @@
                     <option value="5" data-html="{{ $row->id }}" {{{ ($row->rating == 5) ? "selected='selected'" : '' }}}>5</option>
                 </select>
                 <span class="small">Ratings:
-                    <span class="average_rating">{{ number_format($row->avg_rating, 1) }}</span> / 5
-                    by {{ $row->rating_count }} {{{ ($row->rating_count > 1) ? 'users' : 'user' }}}
+                    <span id="avg_rating_{{ $row->id }}" class="average_rating">{{ number_format($row->avg_rating, 1) }}</span> / 5
+                    by <span id="rating_count_{{ $row->id }}">{{ $row->rating_count }}</span> {{{ ($row->rating_count > 1) ? 'users' : 'user' }}}
                 </span>
             </td>
             <td>{{ $row->scenario }}</td>
@@ -79,7 +79,8 @@
                     url: '<?php echo URL::to('save-context-ratings') ?>',
                     data: {'rating': value, 'context_id': text, '_token': $('meta[name=csrf-token]').attr('content')},
                     success: function(data) {
-                        console.log("Data Sent");
+                        $("#avg_rating_"+ text ).html(data.avg_rating);
+                        $("#rating_count_"+ text ).html(data.rating_count);
                     }
                 })
             }
