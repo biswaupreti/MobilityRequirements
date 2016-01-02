@@ -104,11 +104,17 @@ class RequirementsController extends BaseController
                                                         $join->on('CR1.context_id', '=', 'context_scenario_user_app_interaction.id');
                                                         $join->where('CR1.user_id','=', $this->user['id']);
                                                     })
+                                                    ->leftJoin('ways_of_interaction_voting as WOIV', function($join)
+                                                    {
+                                                        $join->on('WOIV.context_id', '=', 'context_scenario_user_app_interaction.id');
+                                                        $join->where('WOIV.user_id','=', $this->user['id']);
+                                                    })
                                                     ->select('context_scenario_user_app_interaction.*',
                                                                 'users.name AS user_name',
                                                                 'context.context_name',
                                                                 'CR1.rating',
-                                                                DB::raw('avg(CR.rating) AS avg_rating, count(CR.id) AS rating_count')
+                                                                DB::raw('avg(CR.rating) AS avg_rating, count(CR.id) AS rating_count'),
+                                                                'WOIV.accompanying', 'WOIV.intermittent', 'WOIV.interrupting'
                                                             )
                                                     ->where('requirement_id', $id)
                                                     ->groupBy('context_scenario_user_app_interaction.id')

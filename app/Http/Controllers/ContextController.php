@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ContextScenarioUserAppInteraction;
 use App\ContextScenarioIdealWay;
 use App\ContextRatings;
+use App\WaysOfInteractionVoting;
 use App\Requirements;
 use Illuminate\Http\Request;
 
@@ -167,6 +168,10 @@ class ContextController extends BaseController
 
     public function saveContextRatings(Request $request)
     {
+        if($request->all()['context_id'] === "" || $request->all()['rating'] === ""){
+            return 'error';
+        }
+
         try{
             $user_id = $this->user['id'];
             $context_id = $request->all()['context_id'];
@@ -190,6 +195,44 @@ class ContextController extends BaseController
                                         ->first();
             $avg_value = number_format($ratings->avg_rating, 1);
             return response()->json(['status' => 'success', 'avg_rating' => $avg_value, 'rating_count' => $ratings->rating_count]);
+        }
+        catch(Exception $e){
+            return response()->json(['status' => 'error']);
+        }
+    }
+
+    public function saveWaysOfInteractionVoting(Request $request)
+    {
+        try{
+            $user_id = $this->user['id'];
+            $context_id = $request->all()['context_id'];
+            $data = array(
+                'context_id' => $context_id,
+                'user_id' => $user_id
+            );
+            if($request->all()['interaction'] == "1"){
+                $data['accompanying'] = $request->all()['interaction_val'];
+            } elseif($request->all()['interaction'] == "2"){
+                $data['intermittent'] = $request->all()['interaction_val'];
+            } else{
+                $data['interrupting'] = $request->all()['interaction_val'];
+            }
+
+            $_rating_exists = WaysOfInteractionVoting::where('user_id', $user_id)
+                                                ->where('context_id', $context_id)
+                                                ->exists();
+            if($_rating_exists){
+                WaysOfInteractionVoting::where('user_id', $user_id)
+                                ->where('context_id', $context_id)
+                                ->update($data);
+            } else{
+                WaysOfInteractionVoting::insert($data);
+            }
+//            $ratings = ContextRatings::select(DB::raw('avg(rating) AS avg_rating, count(id) AS rating_count'))
+//                                        ->where('context_id', $context_id)
+//                                        ->first();
+//            $avg_value = number_format($ratings->avg_rating, 1);
+            return response()->json(['status' => 'success']);
         }
         catch(Exception $e){
             return response()->json(['status' => 'error']);

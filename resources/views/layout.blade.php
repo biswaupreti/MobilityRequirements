@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="{{ URL::asset('dist/themes/bootstrap-stars.css') }}" />
         <script src="{{ URL::asset('js/jquery.barrating.js') }}"></script>
         <script src="{{ URL::asset('js/examples.js') }}"></script>
+        <script src="{{ URL::asset('js/jquery.blockUI.js') }}"></script>
     </head>
     <body>
         <div class="container">

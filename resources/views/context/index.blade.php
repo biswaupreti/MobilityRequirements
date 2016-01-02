@@ -39,16 +39,16 @@
             <td>
                 <form action="#" class="frm_ways_of_interaction">
                     <div class="form-group">
-                        {!! Form::checkbox('accompanying', '1') !!}
-                        <span>Accompanying (<span class="count">0</span>)</span>
+                        {!! Form::checkbox('accompanying', '1', ($row->accompanying == '1') ? 'checked' : '', array('data-context-id' => $row->id, 'class' => 'interaction' )) !!}
+                        <span>Accompanying</span>
                     </div>
                     <div class="form-group">
-                        {!! Form::checkbox('intermittent', '1') !!}
-                        <span>Intermittent (<span class="count">0</span>)</span>
+                        {!! Form::checkbox('intermittent', '2', ($row->intermittent == '1') ? 'checked' : '', array('data-context-id' => $row->id, 'class' => 'interaction' )) !!}
+                        <span>Intermittent</span>
                     </div>
                     <div class="form-group">
-                        {!! Form::checkbox('interrupting', '1') !!}
-                        <span>Interrupting  (<span class="count">0</span>)</span>
+                        {!! Form::checkbox('interrupting', '3', ($row->interrupting == '1') ? 'checked' : '', array('data-context-id' => $row->id, 'class' => 'interaction' )) !!}
+                        <span>Interrupting</span>
                     </div>
                 </form>
             </td>
@@ -74,6 +74,7 @@
         $(".context-rating").barrating({
             theme: 'bootstrap-stars',
             onSelect:function(value,text) {
+                $.blockUI();
                 $.ajax({
                     type: "POST",
                     url: '<?php echo URL::to('save-context-ratings') ?>',
@@ -81,9 +82,32 @@
                     success: function(data) {
                         $("#avg_rating_"+ text ).html(data.avg_rating);
                         $("#rating_count_"+ text ).html(data.rating_count);
+                        $.unblockUI();
                     }
-                })
+                });
             }
+        });
+
+        $(".interaction").click(function(){
+            var context_id = $(this).data('context-id');
+            var interaction = $(this).val();
+            var interaction_val;
+
+            if($(this).is(':checked')){
+                interaction_val = "1";
+            }else{
+                interaction_val = "0";
+            }
+            
+            $.blockUI();
+            $.ajax({
+                type: "POST",
+                url: '<?php echo URL::to('save-ways-of-interaction-voting') ?>',
+                data: {'interaction': interaction, 'interaction_val': interaction_val, 'context_id': context_id, '_token': $('meta[name=csrf-token]').attr('content')},
+                success: function(data) {
+                    $.unblockUI();
+                }
+            });
         });
 
 

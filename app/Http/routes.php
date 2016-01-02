@@ -13,6 +13,7 @@ Route::resource('context', 'ContextController');
 Route::resource('context-ideal-way', 'ContextIdealWayController');
 
 Route::post('save-context-ratings', 'ContextController@saveContextRatings');
+Route::post('save-ways-of-interaction-voting', 'ContextController@saveWaysOfInteractionVoting');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
