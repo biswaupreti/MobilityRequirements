@@ -104,3 +104,10 @@ body{
     font-size: 20px;
 }
 
+.hide-overlay {
+    background: #FFFFFF;
+    opacity: 0.3;
+    width: 85%;
+    height: 1300px;
+    position: absolute;
+}

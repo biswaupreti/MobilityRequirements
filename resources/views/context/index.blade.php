@@ -4,6 +4,11 @@
     </div>
 </div>
 
+@if($project->status == "0")
+    <a href="#" class="btn btn-success pull-right">Review Requirement</a>
+    <div class="hide-overlay"></div>
+@endif
+
 <table class="table table-striped" width="100%">
     <thead>
     <tr>
@@ -69,6 +74,8 @@
 </table>
 <script type="text/javascript">
     $(document).ready(function(){
+
+
 
         // jQuery Bar Rating - bootstrap stars
         $(".context-rating").barrating({

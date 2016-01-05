@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ContextScenarioUserAppInteraction;
 use App\ContextScenarioIdealWay;
+use App\Projects;
 use App\Requirements;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -96,6 +97,7 @@ class RequirementsController extends BaseController
     public function show($id)
     {
         $requirement = Requirements::find($id);
+        $project = Projects::find($requirement->project_id);
         $context = ContextScenarioUserAppInteraction::leftJoin('users', 'users.id', '=', 'context_scenario_user_app_interaction.user_id')
                                                     ->leftJoin('context_scenario_ideal_way AS context', 'context.id', '=', 'context_scenario_user_app_interaction.context_id')
                                                     ->leftJoin('context_ratings as CR', 'CR.context_id', '=', 'context_scenario_user_app_interaction.id')
@@ -125,7 +127,7 @@ class RequirementsController extends BaseController
             'All Requirements' => "/projects/$requirement->project_id"
         );
 
-        return view('requirements.details', compact('requirement', 'context', 'breadcrumbs'));
+        return view('requirements.details', compact('requirement', 'context', 'project', 'breadcrumbs'));
     }
 
     /**
