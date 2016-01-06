@@ -5,7 +5,7 @@
 </div>
 
 @if($project->status == "0")
-    <a href="#" class="btn btn-success pull-right">Review Requirement</a>
+    <a href="{{ url("/review/$requirement->id") }}" class="btn btn-success pull-right">Review Requirement</a>
     <div class="hide-overlay"></div>
 @endif
 

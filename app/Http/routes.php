@@ -12,6 +12,8 @@ Route::resource('requirements', 'RequirementsController');
 Route::resource('context', 'ContextController');
 Route::resource('context-ideal-way', 'ContextIdealWayController');
 
+Route::get('review/{id}', 'RequirementsController@review');
+
 Route::post('save-context-ratings', 'ContextController@saveContextRatings');
 Route::post('save-ways-of-interaction-voting', 'ContextController@saveWaysOfInteractionVoting');
 
