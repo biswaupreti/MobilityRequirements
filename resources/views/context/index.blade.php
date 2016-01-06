@@ -75,8 +75,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-
-
         // jQuery Bar Rating - bootstrap stars
         $(".context-rating").barrating({
             theme: 'bootstrap-stars',
