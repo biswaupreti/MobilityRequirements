@@ -45,7 +45,7 @@
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Login</button>
-                    <a class="btn btn-link" href="{{ url('/password/email') }}">Forgot Your Password?</a>
+                    {{--<a class="btn btn-link" href="{{ url('/password/email') }}">Forgot Your Password?</a>--}}
                 </div>
             </form>
         </div>
