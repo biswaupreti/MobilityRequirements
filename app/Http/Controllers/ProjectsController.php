@@ -39,10 +39,19 @@ class ProjectsController extends BaseController
     {
         $user = $this->user;
 
-        $projects = Projects::leftJoin('users', 'users.id', '=', 'projects.project_owner')
-            ->select('projects.*', 'users.name')
-            ->orderBy('projects.id', 'desc')
-            ->get();
+        if($user->role == '1'){
+            $projects = Projects::leftJoin('users', 'users.id', '=', 'projects.project_owner')
+                ->select('projects.*', 'users.name')
+                ->orderBy('projects.id', 'desc')
+                ->get();
+        } else {
+            $projects = Projects::leftJoin('users', 'users.id', '=', 'projects.project_owner')
+                ->select('projects.*', 'users.name')
+                ->where('projects.project_owner', $user->id)
+                ->orderBy('projects.id', 'desc')
+                ->get();
+        }
+
 
         return view('projects.index', compact('projects', 'user'));
     }
