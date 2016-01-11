@@ -219,41 +219,49 @@ class RequirementsController extends BaseController
         $context = ContextScenarioUserAppInteraction::leftJoin('users', 'users.id', '=', 'context_scenario_user_app_interaction.user_id')
             ->leftJoin('context_scenario_ideal_way AS context', 'context.id', '=', 'context_scenario_user_app_interaction.context_id')
             ->leftJoin('context_ratings as CR', 'CR.context_id', '=', 'context_scenario_user_app_interaction.id')
-            ->select('context_scenario_user_app_interaction.*',
+            ->select('context_scenario_user_app_interaction.id',
+                'context_scenario_user_app_interaction.requirement_id',
+                'context_scenario_user_app_interaction.user_id',
+                'context_scenario_user_app_interaction.context_id',
+                'context_scenario_user_app_interaction.scenario',
                 'users.name AS user_name',
                 'context.context_name',
+                'context.accompanying',
+                'context.intermittent',
+                'context.interrupting',
                 DB::raw('avg(CR.rating) AS avg_rating,
                         count(CR.id) AS rating_count')
             )
             ->where('requirement_id', $requirement_id)
-            ->groupBy('context_scenario_user_app_interaction.id')->get()->toArray();
+            ->groupBy('context_scenario_user_app_interaction.id')
+            ->orderBy('avg_rating', 'DESC')->get();
 
-        $context_voting = ContextScenarioUserAppInteraction::leftJoin('ways_of_interaction_voting as WOIV', 'WOIV.context_id', '=', 'context_scenario_user_app_interaction.id')
-            ->select('context_scenario_user_app_interaction.id',
-                DB::raw('sum(WOIV.accompanying) as accompanying_count,
-                        sum(WOIV.intermittent) as intermittent_count,
-                        sum(WOIV.interrupting) as interrupting_count')
-            )
-            ->where('requirement_id', $requirement_id)
-            ->groupBy('context_scenario_user_app_interaction.id')->get()->toArray();
+//        $context_voting = ContextScenarioUserAppInteraction::leftJoin('ways_of_interaction_voting as WOIV', 'WOIV.context_id', '=', 'context_scenario_user_app_interaction.id')
+//            ->select('context_scenario_user_app_interaction.id',
+//                DB::raw('sum(WOIV.accompanying) as accompanying_count,
+//                        sum(WOIV.intermittent) as intermittent_count,
+//                        sum(WOIV.interrupting) as interrupting_count')
+//            )
+//            ->where('requirement_id', $requirement_id)
+//            ->groupBy('context_scenario_user_app_interaction.id')->get()->toArray();
 
-        foreach($context as &$value1) {
-            foreach ($context_voting as $value2) {
-                if($value1['id'] == $value2['id']) {
-                    $value1 = array_merge($value1, $value2);
-                }
-            }
-        }
+//        foreach($context as &$value1) {
+//            foreach ($context_voting as $value2) {
+//                if($value1['id'] == $value2['id']) {
+//                    $value1 = array_merge($value1, $value2);
+//                }
+//            }
+//        }
 
-        usort($context, function($i, $j){
-            $a = $i['avg_rating'];
-            $b = $j['avg_rating'];
-            if ($a == $b) return 0;
-            elseif ($a > $b) return 1;
-            else return -1;
-        });
+//        usort($context, function($i, $j){
+//            $a = $i['avg_rating'];
+//            $b = $j['avg_rating'];
+//            if ($a == $b) return 0;
+//            elseif ($a > $b) return 1;
+//            else return -1;
+//        });
 
-        $context = array_reverse($context);
+//        $context = array_reverse($context);
 
         $breadcrumbs = array(
             'Projects' => '/projects',

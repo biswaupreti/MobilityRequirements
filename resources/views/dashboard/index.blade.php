@@ -12,8 +12,10 @@
             <div class="col-md-3 dashboard-menu">
                 <ul>
                     @if($authUser->role == '1')
-                    <li><a href="{{ url('/projects') }}" class="btn btn-primary">Project Management</a> </li>
-                    <li><a href="{{ url('/users') }}" class="btn btn-primary">User Management</a> </li>
+                        <li><a href="{{ url('/users') }}" class="btn btn-primary">User Management</a> </li>
+                    @endif
+                    @if($authUser->role == '1' || $authUser->role == '2')
+                        <li><a href="{{ url('/projects') }}" class="btn btn-primary">Project Management</a> </li>
                     @endif
                     <li><a href="{{ url('/context-ideal-way') }}" class="btn btn-primary">Situational Context - Ideal Way</a> </li>
                 </ul>
