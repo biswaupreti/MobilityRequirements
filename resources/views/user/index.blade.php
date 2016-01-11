@@ -15,15 +15,15 @@
 
     <hr/>
 
-    <table class="table table-striped">
+    <table class="table table-striped" width="100%">
         <thead>
         <tr>
-            <th>#</th>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Created On</th>
-            <th>Action</th>
+            <th width="5%">#</th>
+            <th width="20%">User Name</th>
+            <th width="25%">Email</th>
+            <th width="15%">Role</th>
+            <th width="20%">Created On</th>
+            <th width="15%">Action</th>
         </tr>
         </thead>
         <tbody>
