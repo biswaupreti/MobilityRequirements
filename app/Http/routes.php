@@ -16,6 +16,7 @@ Route::get('review/{id}', 'RequirementsController@review');
 
 Route::post('save-context-ratings', 'ContextController@saveContextRatings');
 Route::post('save-ways-of-interaction-voting', 'ContextController@saveWaysOfInteractionVoting');
+Route::post('save-remarks', 'ContextController@saveRemarks');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

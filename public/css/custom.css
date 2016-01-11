@@ -115,3 +115,8 @@ body{
     position: absolute;
     margin-top: 35px;
 }
+
+.remarks_holder{
+    background: yellow;
+    cursor: pointer;
+}

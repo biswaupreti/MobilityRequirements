@@ -201,6 +201,7 @@ class ContextController extends BaseController
         }
     }
 
+
     public function saveWaysOfInteractionVoting(Request $request)
     {
         try{
@@ -228,10 +229,25 @@ class ContextController extends BaseController
             } else{
                 WaysOfInteractionVoting::insert($data);
             }
-//            $ratings = ContextRatings::select(DB::raw('avg(rating) AS avg_rating, count(id) AS rating_count'))
-//                                        ->where('context_id', $context_id)
-//                                        ->first();
-//            $avg_value = number_format($ratings->avg_rating, 1);
+            return response()->json(['status' => 'success']);
+        }
+        catch(Exception $e){
+            return response()->json(['status' => 'error']);
+        }
+    }
+
+
+    public function saveRemarks(Request $request)
+    {
+        try{
+            $context_id = $request->all()['context_id'];
+            $data = array(
+                'remarks' => $request->all()['remarks']
+            );
+
+            ContextScenarioUserAppInteraction::where('id', $context_id)
+                                    ->update($data);
+
             return response()->json(['status' => 'success']);
         }
         catch(Exception $e){
