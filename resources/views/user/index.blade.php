@@ -10,6 +10,7 @@
             <button class="btn btn-primary"  style="margin-top: 20px;">
                 <a href="{{ url('users/create') }}"  style="color: #ffffff;">Create New</a>
             </button>
+            <a href="{{ url('users/create') }}"  style="color: #ffffff;">Create New</a>
         </div>
     </div>
 
