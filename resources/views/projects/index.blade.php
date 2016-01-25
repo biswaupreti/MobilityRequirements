@@ -7,9 +7,7 @@
             <h3>All Projects</h3>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-primary"  style="margin-top: 20px;">
-                <a href="{{ url('projects/create') }}"  style="color: #ffffff;">Create New</a>
-            </button>
+            <a href="{{ url('projects/create') }}" class="btn btn-primary"  style=" margin-top: 20px; color: #ffffff;">Create New</a>
         </div>
     </div>
 
