@@ -5,7 +5,7 @@
     <div class="row" style="margin-top: 200px;">
         <div class="col-md-6" style="text-align: center;">
             <h1 class="title" style="">
-                Mobility Requirements Tool <br/>for <br/>Mobile Apps.
+                MoRE
             </h1>
         </div>
         <div class="col-md-6" style="border-left: 1px solid #777777;">

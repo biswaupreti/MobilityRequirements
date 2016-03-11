@@ -17,10 +17,15 @@
             <div class="content">
 
                 @if(isset($authUser) && !empty($authUser->name))
-                    <div class="user-info">
-                        <a href="{{ url('/') }}">Dashboard </a>
-                        | Welcome {{ $authUser->name }},
-                        <a href="{{ url('/auth/logout') }}">Logout</a>
+                    <div class="row">
+                        <div class="logo">
+                            <h1><a href="{{ url('/') }}"> MoRE</a></h1>
+                        </div>
+                        <div class="user-info">
+                            <a href="{{ url('/') }}">Dashboard </a>
+                            | Welcome {{ $authUser->name }},
+                            <a href="{{ url('/auth/logout') }}">Logout</a>
+                        </div>
                     </div>
                 @endif
 

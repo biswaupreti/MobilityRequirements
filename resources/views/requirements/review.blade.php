@@ -36,7 +36,7 @@ $req_interrupting = $requirement->interrupting;
 
     <div class="row">
         <div class="col-md-10">
-            <h3>Context Scenarios</h3>
+            <h3>Context Analysis</h3>
         </div>
     </div>
 
@@ -45,7 +45,7 @@ $req_interrupting = $requirement->interrupting;
         <tr>
             <th width="5%">#</th>
             <th width="20%">Context</th>
-            <th width="30%">Scenario</th>
+            <th width="30%">Scene</th>
             <th width="20%">Ways of Interaction</th>
             <th width="25%">Remarks</th>
         </tr>
@@ -109,7 +109,9 @@ $req_interrupting = $requirement->interrupting;
             <tr>
                 <th scope="row">{{ $i }}</th>
                 <td>
-                    {{ $row->context_name }} <br/>
+                    {{ $row->context_name }} 
+                <br/>
+                <small>( {{ $row->full_name }} )</small><br/>
                     <span class="small">Ratings:
                         <span id="avg_rating_{{ $row->id }}" class="average_rating">{{ number_format($row->avg_rating, 1) }}</span> / 5
                         by <span id="rating_count_{{ $row->id }}">{{ $row->rating_count }}</span> {{{ ($row->rating_count > 1) ? 'users' : 'user' }}}
@@ -135,11 +137,12 @@ $req_interrupting = $requirement->interrupting;
                 <td>
                     @if($accompanying_conflict || $intermittent_conflict || $interrupting_conflict)
                         <form class="form_remarks_{{ $row->id }}" style="{{{ ($row->remarks != "") ? 'display: none;' : 'display: block;' }}}">
-                            <input type="text" name="remarks_{{ $row->id }}" value="{{ $row->remarks }}" placeholder="Add remarks here!" class="form-control" required="required" />
+                            {{--<input type="text" name="remarks_{{ $row->id }}" value="{{ $row->remarks }}" placeholder="Add remarks here!" class="form-control" required="required" />--}}
+                            <textarea name="remarks_{{ $row->id }}" placeholder="Add remarks here!" class="form-control" required="required"> {!! $row->remarks !!} </textarea>
                             <a href="javascript:;" class="add_remarks btn btn-sm btn-default" data-context-id="{{ $row->id }}" style="margin-top: 5px;">Add Remarks</a>
                         </form>
 
-                        <span class="remarks_{{ $row->id }} remarks_holder" data-context-id="{{ $row->id }}" title="Double click to edit!!!">{{ $row->remarks }}</span>
+                        <span class="remarks_{{ $row->id }} remarks_holder" data-context-id="{{ $row->id }}" title="Double click to edit!!!">{!! nl2br($row->remarks) !!}</span>
                     @else
                         <p>--</p>
                     @endif
@@ -154,7 +157,7 @@ $req_interrupting = $requirement->interrupting;
         $(document).ready(function(){
             $(".add_remarks").click(function(){
                 var context_id = $(this).data('context-id');
-                var remarks = $("input[name=remarks_"+ context_id +"]").val();
+                var remarks = $("textarea[name=remarks_"+ context_id +"]").val();
                 if(remarks == ''){
                     return false;
                 }

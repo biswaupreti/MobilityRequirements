@@ -4,8 +4,8 @@
 </div>
 
 <div class="form-group">
-    {!! Form::label('scenario', 'Scenario:') !!}
-    {!! Form::text('scenario', null, ['class' => 'form-control', 'required' => 'required']) !!}
+    {!! Form::label('scenario', 'Scene:') !!}
+    {!! Form::textarea('scenario', null, ['class' => 'form-control', 'required' => 'required']) !!}
 </div>
 
 {{--<div class="form-group">--}}

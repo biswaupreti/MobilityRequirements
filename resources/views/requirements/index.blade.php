@@ -22,7 +22,7 @@
     <?php $i = 1; ?>
     @foreach($requirements as $req)
         <tr>
-            <th scope="row">{{ $i }}</th>
+            <th scope="row">{{ $project->id . str_pad($req->id, 4, "0", STR_PAD_LEFT ) }}</th>
             <td><a href="{{ url('/requirements', [$req->id]) }}">{{ $req->title }}</a></td>
             <td>{{ $req->description }}</td>
             <td>{{ $req->created_by }}</td>

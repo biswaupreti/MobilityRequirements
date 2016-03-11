@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-10">
-        <h3>Context Scenarios</h3>
+        <h3>Context Voting</h3>
     </div>
 </div>
 
@@ -13,10 +13,10 @@
     <thead>
     <tr>
         <th width="5%">#</th>
-        <th width="15%">Context</th>
-        <th width="40%">Scenario</th>
+        <th width="20%">Context</th>
+        <th width="45%">Scene</th>
         <th width="20%">Ways of Interaction</th>
-        <th width="10%">Added By</th>
+        <!--<th width="10%">Added By</th>-->
         <th width="10%">Action</th>
     </tr>
     </thead>
@@ -26,7 +26,10 @@
         <tr>
             <th scope="row">{{ $i }}</th>
             <td>
-                {{ $row->context_name }} <br/><br/>
+                {{ $row->context_name }} 
+                <br/>
+                <small>( {{ $row->full_name }} )</small>
+                <br/>
                 <select class="context-rating" name="rating">
                     <option value=""></option>
                     <option value="1" data-html="{{ $row->id }}" {{{ ($row->rating == 1) ? "selected='selected'" : '' }}}>1</option>
@@ -40,7 +43,7 @@
                     by <span id="rating_count_{{ $row->id }}">{{ $row->rating_count }}</span> {{{ ($row->rating_count > 1) ? 'users' : 'user' }}}
                 </span>
             </td>
-            <td>{{ $row->scenario }}</td>
+            <td>{!! nl2br($row->scenario)  !!}</td>
             <td>
                 <form action="#" class="frm_ways_of_interaction">
                     <div class="form-group">
@@ -57,7 +60,6 @@
                     </div>
                 </form>
             </td>
-            <td>{{ $row->user_name }}</td>
             <td>
                 @if($row->user_id === $authUser->id)
                     <a href="{{ url('/context', [$row->id, 'edit']) }}" title="Edit!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">

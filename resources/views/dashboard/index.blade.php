@@ -4,7 +4,7 @@
 
     <div class="row">
 
-        <h1>Dashboard</h1>
+        <h3>Dashboard</h3>
         <hr/>
 
         <div class="row">
@@ -18,7 +18,7 @@
                         <li><a href="{{ url('/projects') }}" class="btn btn-primary">Project Management</a> </li>
                     @endif
                     <li><a href="{{ url('/context-ideal-way') }}" class="btn btn-primary">Situational Context - Ideal Way</a> </li>
-                    <li><a href="{{ URL::asset('uploads/MobReqUserManual.pdf') }}" class="btn btn-primary" target="_new">Download User Manual</a> </li>
+                    <li><a href="{{ URL::asset('uploads/MobReqUserManual.pdf') }}" class="btn btn-primary" target="_new">Download User Manual</a> </li>                    
                 </ul>
             </div>
 

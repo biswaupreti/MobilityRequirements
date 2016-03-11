@@ -114,6 +114,7 @@ class RequirementsController extends BaseController
                                                     ->select('context_scenario_user_app_interaction.*',
                                                                 'users.name AS user_name',
                                                                 'context.context_name',
+                                                                'context.full_name',
                                                                 'CR1.rating',
                                                                 DB::raw('avg(CR.rating) AS avg_rating, count(CR.id) AS rating_count'),
                                                                 'WOIV.accompanying', 'WOIV.intermittent', 'WOIV.interrupting'
@@ -221,6 +222,7 @@ class RequirementsController extends BaseController
             ->select('context_scenario_user_app_interaction.*',
                 'users.name AS user_name',
                 'context.context_name',
+                'context.full_name',
                 DB::raw('avg(CR.rating) AS avg_rating,
                         count(CR.id) AS rating_count')
             )
