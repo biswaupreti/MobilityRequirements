@@ -10,6 +10,8 @@
             <dd>{{ $project->title }}</dd>
             <dt>Description: </dt>
             <dd>{{ $project->description }}</dd>
+            <dt>Scenarios: </dt>
+            <dd>{!! nl2br($project->scenario) !!}}</dd>
             <dt>Project Owner: </dt>
             <dd>{{ $project->owner }}</dd>
             <dt>Created On</dt>
