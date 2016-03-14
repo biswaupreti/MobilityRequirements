@@ -1,7 +1,7 @@
 <?php
-$req_accompanying = $requirement->accompanying;
-$req_intermittent = $requirement->intermittent;
-$req_interrupting = $requirement->interrupting;
+    $req_accompanying = $requirement->accompanying;
+    $req_intermittent = $requirement->intermittent;
+    $req_interrupting = $requirement->interrupting;
 ?>
 @extends('layout')
 
@@ -54,64 +54,36 @@ $req_interrupting = $requirement->interrupting;
         <?php $i = 1; ?>
         @foreach($context as $row)
             <?php
-            $row = (object) $row;
-
-            // show conflicted ways of interaction in red color
-            //$accompanying_count = 0;
-            //$intermittent_count = 0;
-            //$interrupting_count = 0;
-
-            // For Accompanying
-            if(is_null($row->accompanying_count)){
-                $row->accompanying_count = '0';
-            }
-            if($req_accompanying && $row->accompanying_count == '0') {
-                $accompanying_conflict = true;
-                $accompanying_count = "<span class='accompanying_count'>$row->accompanying_count</span>";
-            } elseif(!$req_accompanying && $row->accompanying_count > 0){
-                $accompanying_conflict = true;
-                $accompanying_count = "<span class='accompanying_count'>$row->accompanying_count</span>";
-            } else{
-                $accompanying_conflict = false;
-                $accompanying_count = "<span class='accompanying_count'>$row->accompanying_count</span>";
-            }
-
-            // For Intermittent
-            if(is_null($row->intermittent_count)){
-                $row->intermittent_count = '0';
-            }
-            if($req_intermittent && $row->intermittent_count == '0') {
-                $intermittent_conflict = true;
-                $intermittent_count = "<span class='intermittent_count'>$row->intermittent_count</span>";
-            } elseif(!$req_intermittent && $row->intermittent_count > 0){
-                $intermittent_conflict = true;
-                $intermittent_count = "<span class='intermittent_count'>$row->intermittent_count</span>";
-            } else{
-                $intermittent_conflict = false;
-                $intermittent_count = "<span class='intermittent_count'>$row->intermittent_count</span>";
-            }
-
-            // For Interrupting
-            if(is_null($row->interrupting_count)){
-                $row->interrupting_count = '0';
-            }
-            if($req_interrupting && $row->interrupting_count == '0') {
-                $interrupting_conflict = true;
-                $interrupting_count = "<span class='interrupting_count'>$row->interrupting_count</span>";
-            } elseif(!$req_interrupting && $row->interrupting_count > 0){
-                $interrupting_conflict = true;
-                $interrupting_count = "<span class='interrupting_count'>$row->interrupting_count</span>";
-            } else{
-                $interrupting_conflict = false;
-                $interrupting_count = "<span class='interrupting_count'>$row->interrupting_count</span>";
-            }
+                $conflict = false;
+                $accompanying_value = "";
+                $intermittent_value = "";
+                $interrupting_value = "";
+                if($row->accompanying) {
+                    $accompanying_value = "<span class=''>Accompanying</span>";
+                    if(($req_accompanying != $row->accompanying)){
+                        $conflict = true;
+                        $accompanying_value = "<span class='red'>Accompanying</span>";
+                    }
+                }
+                if($row->intermittent) {
+                    $intermittent_value = "<span class=''>Intermittent</span>";
+                    if(($req_intermittent != $row->intermittent)){
+                        $conflict = true;
+                        $intermittent_value = "<span class='red'>Intermittent</span>";
+                    }
+                }
+                if($row->interrupting) {
+                    $interrupting_value = "<span class=''>Interrupting</span>";
+                    if(($req_interrupting != $row->interrupting)){
+                        $conflict = true;
+                        $interrupting_value = "<span class='red'>Interrupting</span>";
+                    }
+                }
             ?>
             <tr>
                 <th scope="row">{{ $i }}</th>
                 <td>
-                    {{ $row->context_name }} 
-                <br/>
-                <small>( {{ $row->full_name }} )</small><br/>
+                    {{ $row->context_name }} <br/>
                     <span class="small">Ratings:
                         <span id="avg_rating_{{ $row->id }}" class="average_rating">{{ number_format($row->avg_rating, 1) }}</span> / 5
                         by <span id="rating_count_{{ $row->id }}">{{ $row->rating_count }}</span> {{{ ($row->rating_count > 1) ? 'users' : 'user' }}}
@@ -120,22 +92,25 @@ $req_interrupting = $requirement->interrupting;
                 <td>{{ $row->scenario }}</td>
                 <td>
                     <div class="frm_ways_of_interaction">
-                        <div class="form-group {{{ ($accompanying_conflict) ? 'red' : '' }}} ">
-                            <span>Accompanying</span>
-                            ( {!! $accompanying_count !!} )
+                        @if(isset($accompanying_value))
+                        <div class="form-group">
+                            {!! $accompanying_value !!}
                         </div>
-                        <div class="form-group {{{ ($intermittent_conflict) ? 'red' : '' }}}">
-                            <span>Intermittent</span>
-                            ( {!! $intermittent_count !!} )
+                        @endif
+                        @if(isset($intermittent_value))
+                        <div class="form-group">
+                            {!! $intermittent_value !!}
                         </div>
-                        <div class="form-group {{{ ($interrupting_conflict) ? 'red' : '' }}}">
-                            <span>Interrupting</span>
-                            ( {!! $interrupting_count !!} )
+                        @endif
+                        @if(isset($interrupting_value))
+                        <div class="form-group">
+                            {!! $interrupting_value !!}
                         </div>
+                        @endif
                     </div>
                 </td>
                 <td>
-                    @if($accompanying_conflict || $intermittent_conflict || $interrupting_conflict)
+                    @if($conflict)
                         <form class="form_remarks_{{ $row->id }}" style="{{{ ($row->remarks != "") ? 'display: none;' : 'display: block;' }}}">
                             <input type="text" name="remarks_{{ $row->id }}" value="{{ $row->remarks }}" placeholder="Add remarks here!" class="form-control" required="required" />
                             <a href="javascript:;" class="add_remarks btn btn-sm btn-default" data-context-id="{{ $row->id }}" style="margin-top: 5px;">Add Remarks</a>
@@ -143,7 +118,7 @@ $req_interrupting = $requirement->interrupting;
 
                         <span class="remarks_{{ $row->id }} remarks_holder" data-context-id="{{ $row->id }}" title="Double click to edit!!!">{{ $row->remarks }}</span>
                     @else
-                        <p>--</p>
+                        --
                     @endif
                 </td>
             </tr>

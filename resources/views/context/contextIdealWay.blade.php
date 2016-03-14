@@ -8,6 +8,12 @@
     </div>
 </div>
 
+<p class="bg-success" style="padding: 5px 10px;">
+<strong>Spatial</strong> - V: Visiting (stationary); T: Traveling (in transportation); W: Wondering (physically moving) <br/>
+<strong>Social</strong> - C: Constraining; E: Encouraging <br/>
+<strong>Temporal</strong> - I: Intensive; A: Allocative
+</p>
+
 <table class="table table-striped" width="100%">
     <thead>
     <tr>

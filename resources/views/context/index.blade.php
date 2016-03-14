@@ -13,10 +13,10 @@
     <thead>
     <tr>
         <th width="5%">#</th>
-        <th width="15%">Context</th>
-        <th width="40%">Scenario</th>
+        <th width="20%">Context</th>
+        <th width="45%">Scenario</th>
         <th width="20%">Ways of Interaction</th>
-        <th width="10%">Added By</th>
+        <!--<th width="10%">Added By</th>-->
         <th width="10%">Action</th>
     </tr>
     </thead>
@@ -26,7 +26,10 @@
         <tr>
             <th scope="row">{{ $i }}</th>
             <td>
-                {{ $row->context_name }} <br/><br/>
+                {{ $row->context_name }} 
+                <br/>
+                <small>( {{ $row->full_name }} )</small>
+                <br/>
                 <select class="context-rating" name="rating">
                     <option value=""></option>
                     <option value="1" data-html="{{ $row->id }}" {{{ ($row->rating == 1) ? "selected='selected'" : '' }}}>1</option>
@@ -57,7 +60,6 @@
                     </div>
                 </form>
             </td>
-            <td>{{ $row->user_name }}</td>
             <td>
                 @if($row->user_id === $authUser->id)
                     <a href="{{ url('/context', [$row->id, 'edit']) }}" title="Edit!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">
