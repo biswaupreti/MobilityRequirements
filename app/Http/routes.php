@@ -9,6 +9,7 @@ Route::get('contact', 'PagesController@contact');
 Route::resource('users', 'UserController');
 Route::resource('projects', 'ProjectsController');
 Route::resource('requirements', 'RequirementsController');
+Route::resource('scenarios', 'ScenariosController');
 Route::resource('context', 'ContextController');
 Route::resource('context-ideal-way', 'ContextIdealWayController');
 

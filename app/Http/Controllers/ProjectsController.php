@@ -7,6 +7,7 @@ use App\Projects;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Requirements;
+use App\Scenarios;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +73,12 @@ class ProjectsController extends BaseController
                                     ->select('requirements.*', 'users.name as created_by')
                                     ->where('project_id', $id)->latest()->get();
 
-        return view('projects.details', compact('project', 'requirements'));
+        $scenarios = Scenarios::leftJoin('users', 'users.id', '=', 'scenarios.user_id')
+                                    ->leftJoin('context_scenario_ideal_way', 'context_scenario_ideal_way.id', '=', 'scenarios.context_id')
+                                    ->select('scenarios.*', 'users.name as created_by', 'context_scenario_ideal_way.context_name', 'context_scenario_ideal_way.full_name')
+                                    ->where('project_id', $id)->latest()->get();
+
+        return view('projects.details', compact('project', 'requirements', 'scenarios'));
     }
 
     /**

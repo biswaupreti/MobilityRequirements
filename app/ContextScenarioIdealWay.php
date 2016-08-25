@@ -21,11 +21,11 @@ class contextScenarioIdealWay extends Model
      */
     public static function getContextIdealWayKeyValue()
     {
-        $context_data = ContextScenarioIdealWay::select('id', 'context_name')->get()->toArray();
+        $context_data = ContextScenarioIdealWay::select('id', 'context_name', 'full_name')->get()->toArray();
         $context_ideal_way = array();
         if($context_data){
             foreach($context_data as $item){
-                $context_ideal_way[$item['id']] = $item['context_name'];
+                $context_ideal_way[$item['id']] = ($item['context_name'] . ': ' . $item['full_name']);
             }
         }
 

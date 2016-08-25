@@ -10,8 +10,8 @@
             <dd>{{ $project->title }}</dd>
             <dt>Description: </dt>
             <dd>{{ $project->description }}</dd>
-            <dt>Scenarios: </dt>
-            <dd>{!! nl2br($project->scenario) !!}</dd>
+            {{--<dt>Scenarios: </dt>--}}
+            {{--<dd>{!! nl2br($project->scenario) !!}</dd>--}}
             <dt>Project Owner: </dt>
             <dd>{{ $project->owner }}</dd>
             <dt>Created On</dt>
@@ -26,6 +26,8 @@
             </dd>
         </dl>
     </div>
+
+    @include('scenarios.index', array($scenarios, $project->id))
 
     @include('requirements.index', array($requirements, $project->id))
 
