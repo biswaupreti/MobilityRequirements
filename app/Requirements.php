@@ -10,6 +10,7 @@ class Requirements extends Model
         'title',
         'description',
         'project_id',
+        'scenario_id',
         'user_id',
         'accompanying',
         'intermittent',

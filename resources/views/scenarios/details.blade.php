@@ -19,5 +19,5 @@
         </dl>
     </div>
 
-{{--    @include('context.index', array($context_arr, $scenario->id, $project))--}}
+    @include('requirements.index', array($requirements, $scenario->id))
 @stop

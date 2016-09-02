@@ -87,12 +87,16 @@ class ScenariosController extends BaseController
 
     $project = Projects::find($scenario->project_id);
 
+    $requirements = Requirements::leftJoin('users', 'users.id', '=', 'requirements.user_id')
+      ->select('requirements.*', 'users.name as created_by')
+      ->where('scenario_id', $id)->latest()->get();
+
     $breadcrumbs = array(
       'Projects' => '/projects',
       'Scenarios' => "/projects/$scenario->project_id"
     );
 
-    return view('scenarios.details', compact('scenario', 'project', 'breadcrumbs'));
+    return view('scenarios.details', compact('scenario', 'project', 'requirements', 'breadcrumbs'));
   }
 
   /**

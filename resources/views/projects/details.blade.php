@@ -29,6 +29,6 @@
 
     @include('scenarios.index', array($scenarios, $project->id))
 
-    @include('requirements.index', array($requirements, $project->id))
+{{--    @include('requirements.index', array($requirements, $project->id))--}}
 
 @stop

@@ -24,7 +24,7 @@
 </div>
 
 <div class="form-group">
-    {!! Form::hidden('project_id', isset($project_id) ? $project_id : '') !!}
+    {!! Form::hidden('scenario_id', isset($scenario_id) ? $scenario_id : '') !!}
     {!! Form::submit($submitButtonText, ['class' => 'btn btn-primary']) !!}
     <a class="btn btn-default" onclick="history.go(-1)">Cancel</a>
 </div>

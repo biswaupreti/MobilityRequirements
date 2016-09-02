@@ -6,6 +6,7 @@ use App\ContextScenarioUserAppInteraction;
 use App\ContextScenarioIdealWay;
 use App\ContextSceneRelation;
 use App\Projects;
+use App\Scenarios;
 use App\Requirements;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -18,7 +19,7 @@ use Psy\Context;
 
 class RequirementsController extends BaseController
 {
-    private $rules = ['title' => 'required|min:5', 'description' => 'required', 'project_id' => 'required'];
+    private $rules = ['title' => 'required|min:5', 'description' => 'required', 'scenario_id' => 'required'];
 
     /**
      * Display a listing of the resource.
@@ -37,14 +38,14 @@ class RequirementsController extends BaseController
      */
     public function create()
     {
-        $project_id = Input::get('project');
+        $scenario_id = Input::get('scenario');
 
         $breadcrumbs = array(
             'Projects' => '/projects',
-            'All Requirements' => "/projects/$project_id"
+            'All Requirements' => "/scenarios/$scenario_id"
         );
 
-        return view('requirements.create', compact('project_id', 'breadcrumbs'));
+        return view('requirements.create', compact('scenario_id', 'breadcrumbs'));
     }
 
     /**
@@ -85,7 +86,7 @@ class RequirementsController extends BaseController
             Session::flash('flash_message_error', 'Sorry, An error occurred while creating new requirement!');
         }
 
-        return redirect("projects/$request->project_id");
+        return redirect("scenarios/$request->scenario_id");
     }
 
 
@@ -98,7 +99,8 @@ class RequirementsController extends BaseController
     public function show($id)
     {
         $requirement = Requirements::find($id);
-        $project = Projects::find($requirement->project_id);
+        $scenario = Scenarios::find($requirement->scenario_id);
+        $project = Projects::find($scenario->project_id);
         $context = ContextScenarioUserAppInteraction::leftJoin('users', 'users.id', '=', 'context_scenario_user_app_interaction.user_id')
                                                     ->leftJoin('context_scenario_ideal_way AS context', 'context.id', '=', 'context_scenario_user_app_interaction.context_id')
                                                     ->leftJoin('context_ratings as CR', 'CR.context_id', '=', 'context_scenario_user_app_interaction.id')
@@ -140,7 +142,7 @@ class RequirementsController extends BaseController
 
         $breadcrumbs = array(
             'Projects' => '/projects',
-            'All Requirements' => "/projects/$requirement->project_id"
+            'All Requirements' => "/scenarios/$requirement->scenario_id"
         );
         
         return view('requirements.details', compact('requirement', 'context_arr', 'project', 'breadcrumbs'));
@@ -155,19 +157,19 @@ class RequirementsController extends BaseController
     public function edit($id)
     {
         $requirement = Requirements::find($id);
-        $project_id = $requirement->project_id;
+        $scenario_id = $requirement->scenario_id;
 
         if($requirement->user_id != $this->user['id']){
             Session::flash('flash_message_warning', 'Sorry, you do not have enough privilege to make this change!');
-            return redirect("projects/$project_id");
+            return redirect("scenarios/$scenario_id");
         }
 
         $breadcrumbs = array(
             'Projects' => '/projects',
-            'All Requirements' => "/projects/$project_id"
+            'All Requirements' => "/scenarios/$scenario_id"
         );
 
-        return view('requirements.edit', compact('requirement', 'project_id', 'breadcrumbs'));
+        return view('requirements.edit', compact('requirement', 'scenario_id', 'breadcrumbs'));
     }
 
     /**
@@ -198,7 +200,7 @@ class RequirementsController extends BaseController
 
         Session::flash('flash_message', 'Congratulations, Requirement updated successfully!');
 
-        return redirect("projects/$request->project_id");
+        return redirect("scenarios/$request->scenario_id");
     }
 
     /**
