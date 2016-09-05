@@ -3,7 +3,7 @@
         <h3>Requirements</h3>
     </div>
     <div class="col-md-2">
-        <a href="{{ url('requirements/create/?project='. $project->id) }}" class="btn btn-primary"  style=" margin-top: 20px; color: #ffffff;">Create New</a>
+        <a href="{{ url('requirements/create?scenario='. $scenario->id) }}" class="btn btn-primary"  style=" margin-top: 20px; color: #ffffff;">Create New</a>
     </div>
 </div>
 
@@ -22,7 +22,7 @@
     <?php $i = 1; ?>
     @foreach($requirements as $req)
         <tr>
-            <th scope="row">{{ $project->id . str_pad($req->id, 4, "0", STR_PAD_LEFT ) }}</th>
+            <th scope="row">{{ $scenario->id . str_pad($req->id, 4, "0", STR_PAD_LEFT ) }}</th>
             <td><a href="{{ url('/requirements', [$req->id]) }}">{{ $req->title }}</a></td>
             <td>{{ $req->description }}</td>
             <td>{{ $req->created_by }}</td>

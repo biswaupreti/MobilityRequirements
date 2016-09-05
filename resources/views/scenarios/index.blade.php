@@ -3,7 +3,7 @@
         <h3>Scenarios</h3>
     </div>
     <div class="col-md-2">
-        <a href="{{ url('scenarios/create/?project='. $project->id) }}" class="btn btn-primary"  style=" margin-top: 20px; color: #ffffff;">Create New</a>
+        <a href="{{ url('/scenarios/create?project='. $project->id) }}" class="btn btn-primary"  style=" margin-top: 20px; color: #ffffff;">Create New</a>
     </div>
 </div>
 

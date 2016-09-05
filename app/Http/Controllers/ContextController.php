@@ -40,13 +40,13 @@ class ContextController extends BaseController
     public function create()
     {
         $requirement_id = Input::get('requirement');
-        $project = Requirements::select('project_id')->where('id', $requirement_id)->first();
+        $requirement = Requirements::select('scenario_id')->where('id', $requirement_id)->first();
 
         $context_ideal_way = ContextScenarioIdealWay::getContextIdealWayKeyValue();
 
         $breadcrumbs = array(
             'Projects' => "/projects",
-            'All Requirements' => "/projects/$project->project_id",
+            'All Requirements' => "/scenarios/$requirement->scenario_id",
             'All Context' => "requirements/$requirement_id"
         );
 
@@ -113,12 +113,12 @@ class ContextController extends BaseController
 //            return redirect("requirements/$requirement_id");
 //        }
 
-        $project = Requirements::select('project_id')->where('id', $requirement_id)->first();
+        $requirement = Requirements::select('scenario_id')->where('id', $requirement_id)->first();
         $context_ideal_way = ContextScenarioIdealWay::getContextIdealWayKeyValue();
 
         $breadcrumbs = array(
             'Projects' => "/projects",
-            'All Requirements' => "/projects/$project->project_id",
+            'All Requirements' => "/scenarios/$requirement->scenario_id",
             'All Context' => "requirements/$requirement_id"
         );
 

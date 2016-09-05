@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Scenarios;
+use App\Projects;
 use App\Requirements;
 use App\ContextScenarioIdealWay;
 use Illuminate\Http\Request;
@@ -80,15 +81,22 @@ class ScenariosController extends BaseController
    */
   public function show($id)
   {
-    $scenario = Scenarios::find($id);
+    $scenario = Scenarios::select('scenarios.*', 'context_scenario_ideal_way.context_name', 'context_scenario_ideal_way.full_name')
+      ->leftJoin('context_scenario_ideal_way', 'context_scenario_ideal_way.id', '=', 'scenarios.context_id')
+      ->where('scenarios.id', $id)->first();
+
     $project = Projects::find($scenario->project_id);
+
+    $requirements = Requirements::leftJoin('users', 'users.id', '=', 'requirements.user_id')
+      ->select('requirements.*', 'users.name as created_by')
+      ->where('scenario_id', $id)->latest()->get();
 
     $breadcrumbs = array(
       'Projects' => '/projects',
       'Scenarios' => "/projects/$scenario->project_id"
     );
 
-    return view('scenarios.details', compact('scenario', 'project', 'breadcrumbs'));
+    return view('scenarios.details', compact('scenario', 'project', 'requirements', 'breadcrumbs'));
   }
 
   /**

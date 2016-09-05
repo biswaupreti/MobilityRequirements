@@ -10,7 +10,7 @@
 
     {!! Form::open(['url' => 'requirements']) !!}
 
-        @include('requirements._form', ['submitButtonText' => 'Add New', 'project_id' => $project_id])
+        @include('requirements._form', ['submitButtonText' => 'Add New', 'scenario_id' => $scenario_id])
 
     {!! Form::close() !!}
 
