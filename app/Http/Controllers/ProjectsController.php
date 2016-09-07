@@ -69,14 +69,15 @@ class ProjectsController extends BaseController
             ->where('projects.id', $id)
             ->first();
 
-//        $requirements = Requirements::leftJoin('users', 'users.id', '=', 'requirements.user_id')
-//                                    ->select('requirements.*', 'users.name as created_by')
-//                                    ->where('scenario_id', $id)->latest()->get();
+        $requirements = Requirements::leftJoin('users', 'users.id', '=', 'requirements.user_id')
+                                    ->leftJoin('scenarios', 'scenarios.id', '=', 'requirements.scenario_id')
+                                    ->select('requirements.*', 'users.name as created_by', 'scenarios.scene as scenario')
+                                    ->where('requirements.project_id', $id)->latest()->get();
 
-        $scenarios = Scenarios::leftJoin('users', 'users.id', '=', 'scenarios.user_id')
-                                    ->leftJoin('context_scenario_ideal_way', 'context_scenario_ideal_way.id', '=', 'scenarios.context_id')
-                                    ->select('scenarios.*', 'users.name as created_by', 'context_scenario_ideal_way.context_name', 'context_scenario_ideal_way.full_name')
-                                    ->where('project_id', $id)->latest()->get();
+//        $scenarios = Scenarios::leftJoin('users', 'users.id', '=', 'scenarios.user_id')
+//                                    ->leftJoin('context_scenario_ideal_way', 'context_scenario_ideal_way.id', '=', 'scenarios.context_id')
+//                                    ->select('scenarios.*', 'users.name as created_by', 'context_scenario_ideal_way.context_name', 'context_scenario_ideal_way.full_name')
+//                                    ->where('project_id', $id)->latest()->get();
 
         return view('projects.details', compact('project', 'requirements', 'scenarios'));
     }

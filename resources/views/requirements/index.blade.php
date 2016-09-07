@@ -3,7 +3,7 @@
         <h3>Requirements</h3>
     </div>
     <div class="col-md-2">
-        <a href="{{ url('requirements/create?scenario='. $scenario->id) }}" class="btn btn-primary"  style=" margin-top: 20px; color: #ffffff;">Create New</a>
+        <a href="{{ url('requirements/create?project='. $project->id) }}" class="btn btn-primary"  style=" margin-top: 20px; color: #ffffff;">Create New</a>
     </div>
 </div>
 
@@ -12,9 +12,8 @@
     <tr>
         <th width="5%">#</th>
         <th width="20%">Title</th>
-        <th width="40%">Description</th>
-        <th width="10%">Created By</th>
-        <th width="10%">Created On</th>
+        <th width="30%">Description</th>
+        <th width="30%">Scenario</th>
         <th width="15%">Action</th>
     </tr>
     </thead>
@@ -22,11 +21,10 @@
     <?php $i = 1; ?>
     @foreach($requirements as $req)
         <tr>
-            <th scope="row">{{ $scenario->id . str_pad($req->id, 4, "0", STR_PAD_LEFT ) }}</th>
+            <th scope="row">{{ $project->id . str_pad($req->id, 4, "0", STR_PAD_LEFT ) }}</th>
             <td><a href="{{ url('/requirements', [$req->id]) }}">{{ $req->title }}</a></td>
             <td>{{ $req->description }}</td>
-            <td>{{ $req->created_by }}</td>
-            <td>{{ $req->created_at }}</td>
+            <td>{{ $req->scenario }}</td>
             <td>
                 @if($req->user_id === $authUser->id)
                     <a href="{{ url('/requirements', [$req->id, 'edit']) }}" title="Edit!" class="btn btn-info btn-sm" style="float: left; margin-right: 5px;">

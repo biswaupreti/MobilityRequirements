@@ -38,14 +38,24 @@ class RequirementsController extends BaseController
      */
     public function create()
     {
-        $scenario_id = Input::get('scenario');
+        $project_id = Input::get('project');
+
+        $scenarios = array();
+        $scenarios_qry = Scenarios::select('id', 'scene')
+          ->where('project_id', '=', $project_id)->get()->toArray();
+
+        if($scenarios_qry){
+          foreach($scenarios_qry as $sq){
+            $scenarios[$sq['id']] = $sq['scene'];
+          }
+        }
 
         $breadcrumbs = array(
             'Projects' => '/projects',
-            'All Requirements' => "/scenarios/$scenario_id"
+            'All Requirements' => "/projects/$project_id"
         );
 
-        return view('requirements.create', compact('scenario_id', 'breadcrumbs'));
+        return view('requirements.create', compact('project_id', 'breadcrumbs', 'scenarios'));
     }
 
     /**
@@ -86,7 +96,7 @@ class RequirementsController extends BaseController
             Session::flash('flash_message_error', 'Sorry, An error occurred while creating new requirement!');
         }
 
-        return redirect("scenarios/$request->scenario_id");
+        return redirect("projects/$request->project_id");
     }
 
 
@@ -157,19 +167,29 @@ class RequirementsController extends BaseController
     public function edit($id)
     {
         $requirement = Requirements::find($id);
-        $scenario_id = $requirement->scenario_id;
+        $project_id = $requirement->project_id;
+
+        $scenarios = array();
+        $scenarios_qry = Scenarios::select('id', 'scene')
+          ->where('project_id', '=', $project_id)->get()->toArray();
+
+        if($scenarios_qry){
+          foreach($scenarios_qry as $sq){
+            $scenarios[$sq['id']] = $sq['scene'];
+          }
+        }
 
         if($requirement->user_id != $this->user['id']){
             Session::flash('flash_message_warning', 'Sorry, you do not have enough privilege to make this change!');
-            return redirect("scenarios/$scenario_id");
+            return redirect("projects/$project_id");
         }
 
         $breadcrumbs = array(
             'Projects' => '/projects',
-            'All Requirements' => "/scenarios/$scenario_id"
+            'All Requirements' => "/projects/$project_id"
         );
 
-        return view('requirements.edit', compact('requirement', 'scenario_id', 'breadcrumbs'));
+        return view('requirements.edit', compact('requirement', 'scenarios', 'project_id', 'breadcrumbs'));
     }
 
     /**
@@ -200,7 +220,7 @@ class RequirementsController extends BaseController
 
         Session::flash('flash_message', 'Congratulations, Requirement updated successfully!');
 
-        return redirect("scenarios/$request->scenario_id");
+        return redirect("projects/$request->project_id");
     }
 
     /**
