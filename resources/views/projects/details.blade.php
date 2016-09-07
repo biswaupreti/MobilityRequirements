@@ -10,8 +10,6 @@
             <dd>{{ $project->title }}</dd>
             <dt>Description: </dt>
             <dd>{{ $project->description }}</dd>
-            {{--<dt>Scenarios: </dt>--}}
-            {{--<dd>{!! nl2br($project->scenario) !!}</dd>--}}
             <dt>Project Owner: </dt>
             <dd>{{ $project->owner }}</dd>
             <dt>Created On</dt>
@@ -25,9 +23,10 @@
                 @endif
             </dd>
         </dl>
+        <div class="btn btn-info"><a href="{{ url('/scenarios?project='. $project->id) }}">Manage scenarios for this project</a></div>
     </div>
 
-    @include('scenarios.index', array($scenarios, $project->id))
+{{--    @include('scenarios.index', array($scenarios, $project->id))--}}
 
 {{--    @include('requirements.index', array($requirements, $project->id))--}}
 

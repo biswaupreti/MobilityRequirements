@@ -16,9 +16,8 @@
         <thead>
         <tr>
             <th width="5%">#</th>
-            <th width="12%">Project Title</th>
-            <th width="30%">Description</th>
-            <th width="30%">Scenarios</th>
+            <th width="32%">Project Title</th>
+            <th width="40%">Description</th>
             <th width="8%">Status</th>
             <th width="15%">Action</th>
         </tr>
@@ -33,7 +32,6 @@
                 <th scope="row">{{ $i }}</th>
                 <td><a href="{{ url('/projects', [$project->id]) }}">{{ $project->title }}</a></td>
                 <td>{{ str_limit($project->description, 150) }}</td>
-                <td>{!! nl2br($project->scenario) !!} </td>
                 <td>
                     @if($project->status == '1')
                         <span class="green">{{ 'Open' }}</span>

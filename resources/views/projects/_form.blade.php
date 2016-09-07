@@ -9,11 +9,6 @@
 </div>
 
 <div class="form-group">
-    {!! Form::label('scenario', 'Scenarios:') !!}
-    {!! Form::textarea('scenario', null, ['class' => 'form-control']) !!}
-</div>
-
-<div class="form-group">
     {!! Form::label('project_owner', 'Project Owner:') !!}
     {!! Form::select('project_owner', $owners, null, ['class' => 'form-control', 'required' => 'required']) !!}
 </div>

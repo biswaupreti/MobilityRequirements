@@ -26,7 +26,23 @@ class ScenariosController extends BaseController
    */
   public function index()
   {
-    //
+    $project_id = Input::get('project');
+    $project = Projects::select('title')
+      ->where('id', $project_id)->first();
+
+    $scenarios = Scenarios::leftJoin('users', 'users.id', '=', 'scenarios.user_id')
+      ->leftJoin('context_scenario_ideal_way', 'context_scenario_ideal_way.id', '=', 'scenarios.context_id')
+      ->select('scenarios.*',
+        'users.name as created_by',
+        'context_scenario_ideal_way.context_name',
+        'context_scenario_ideal_way.full_name')
+      ->where('project_id', $project_id)->latest()->get();
+
+    $breadcrumbs = array(
+      'Back to project details' => '/projects/'.$project_id,
+    );
+
+    return view('scenarios.index', compact('scenarios', 'project_id', 'breadcrumbs', 'project'));
   }
 
   /**
@@ -69,7 +85,7 @@ class ScenariosController extends BaseController
       Session::flash('flash_message_error', 'Sorry, An error occurred while creating new scenario!');
     }
 
-    return redirect("projects/$request->project_id");
+    return redirect("scenarios?project=$request->project_id");
   }
 
 
@@ -143,7 +159,7 @@ class ScenariosController extends BaseController
 
     Session::flash('flash_message', 'Congratulations, Scenario updated successfully!');
 
-    return redirect("projects/$request->project_id");
+    return redirect("scenarios?project=$request->project_id");
   }
 
   /**
@@ -166,6 +182,6 @@ class ScenariosController extends BaseController
 
     Session::flash('flash_message', 'Scenario successfully deleted!');
 
-    return redirect("projects/$project_id");
+    return redirect("scenarios?project=$project_id");
   }
 }
